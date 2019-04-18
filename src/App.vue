@@ -11,15 +11,7 @@ import NavBar from "@/components/NavBar.vue";
 import * as jose from "jose";
 
 export default {
-  watch: {
-    token(newTok, oldTok) {
-      if (newTok == null) {
-        this.$refs.navbar.items = this.itemsLogin;
-      } else {
-        this.$refs.navbar.items = this.itemsA;
-      }
-    },
-  },
+  
   data() {
     return {
       itemsA: [

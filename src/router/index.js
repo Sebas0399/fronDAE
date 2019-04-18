@@ -40,6 +40,7 @@ const routes = [
     component: PDF,
     meta: {
       rutaProtegida: true,
+      
     },
   },
   {
@@ -68,7 +69,6 @@ const router = createRouter({
 })
 router.beforeEach((to,from,next) => {
   const rutaIsProtected = to.matched.some(record => record.meta.rutaProtegida)
-  console.log(localStorage.getItem('token'))
   if(rutaIsProtected && localStorage.getItem('token') === null) {
     next('/login')
   }else if(!rutaIsProtected && !!localStorage.getItem('token')){

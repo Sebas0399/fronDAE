@@ -1,8 +1,22 @@
 <template lang="">
   <div class="card">
+    <MultiSelect v-model="selectedItem" :options="insumos" optionLabel="name" placeholder="Select Countries" display="chip" class="w-full md:w-20rem">
+    <template #option="slotProps">
+        <div class="contenedor-item">
+            <div>{{ slotProps.option.codigo }}
+              <InputNumber v-model="slotProps.option.cantidad" :inputId="slotProps.option.codigo " 
+            showButtons buttonLayout="horizontal" :step="1" decrementButtonClass="p-button-danger" 
+            incrementButtonClass="p-button-success" mode="decimal" :min="0" :max="100"/></div>
+            
+        </div>
+    </template>
+    <template #footer>
+        <div class="py-2 px-3">
+            <b>{{ selectedCountries ? selectedCountries.length : 0 }}</b> item{{ (selectedCountries ? selectedCountries.length : 0) > 1 ? 's' : '' }} selected.
+        </div>
+    </template>
+</MultiSelect>
     <Card>
-      <!-- <template #title> </template> -->
-
       <template #content>
         <Image :src="require('@/assets/pdfLogo.png')" alt="Image" width="50" />
         <div class="flex align-items-center">
@@ -79,7 +93,7 @@ export default {
       selectedEmpresa: null,
       insumos: null,
       selectedInsumo: null,
-      selectedCities: null,
+      selectedItem: null,
     };
   },
   watch: {
@@ -99,7 +113,7 @@ export default {
       });
     },
     async obtenerEmpresasUsuario() {
-      await getEmpresas("1725776650001").then((x) => {
+      await getEmpresas().then((x) => {
         this.empresas = x;
       });
     },
@@ -136,7 +150,8 @@ export default {
 contador++;
       });
       
-
+      console.log(datos)
+      
       generarExcelFachada(datos);
       await this.actulizarCreditos();
     },
@@ -151,4 +166,10 @@ button{
   margin-top: 15px;
 
 };
+.contenedor-item{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
 </style>

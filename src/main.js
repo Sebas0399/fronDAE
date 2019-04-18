@@ -37,7 +37,7 @@ import Toast from 'primevue/toast';
 import ConfirmPopup from 'primevue/confirmpopup';
 import ConfirmationService from 'primevue/confirmationservice';
 import Message from 'primevue/message';
-
+import InputNumber from 'primevue/inputnumber';
 const app = createApp(App);
 app.use(PrimeVue);
 app.use(ToastService);
@@ -48,6 +48,7 @@ app.component("Badge",Badge)
 app.component("InputText",InputText)
 app.component("Avatar",Avatar)
 app.component("TabMenu",TabMenu)
+app.component("InputNumber",InputNumber)
 
 app.directive('ripple', Ripple);
 
