@@ -46,8 +46,8 @@ export default {
         this.extractedText.set(pageNumber, texts);
       }
 
-      await sendDataToApi(JSON.stringify(Object.fromEntries(this.extractedText)));
-
+      const datos=await sendDataToApi(Object.fromEntries(this.extractedText));
+      console.log(datos);
 
       this.loading = false;
     },
