@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PDF from '../modules/pdf/PDF.vue'
+import Empresa from '@/modules/empresa/pages/Empresa.vue'
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: '/pdf',
     name: 'pdf',
     component: PDF
+  },
+  {
+    path: '/empresa',
+    name: 'empresa',
+    component: Empresa
   },
   {
     path: '/about',
