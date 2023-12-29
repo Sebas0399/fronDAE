@@ -1,10 +1,6 @@
 <template>
   <div>
     
-<h1>SAPO</h1>
-
-
-
     <form>
       <input type="file" ref="pdfFile" @change="onFileChange">
     </form>
