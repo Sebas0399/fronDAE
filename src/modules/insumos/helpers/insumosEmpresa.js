@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getInsumos  } from "../../utils/apiUtil";
+import { getApiUrl  } from "../../utils/apiUtil";
 
 
 //Fachada
@@ -9,7 +9,8 @@ export const getInsumos= async(empresaRuc)=>{
 
 //Consumir
 const getInsumosEmpresaAPI= async (empresaRuc)=>{
-    const url=getApiUrl(concat('/empresas/',empresaRuc,'/insumos'))
+    console.log(empresaRuc)
+    const url=getApiUrl('empresas/'+empresaRuc+'/insumos')
     return await axios.get(url).then(r => r.data)
    
 }

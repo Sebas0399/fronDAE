@@ -9,11 +9,12 @@ import ColumnGroup from 'primevue/columngroup';   // optional
 import Row from 'primevue/row'; 
 
 import Menu from 'primevue/menu';
+import FileUpload from 'primevue/fileupload';
 
 import 'primeicons/primeicons.css'
 
 //in main.js
-import 'primevue/resources/themes/lara-light-indigo/theme.css'
+import 'primevue/resources/themes/md-light-indigo/theme.css'
 
 import Menubar from 'primevue/menubar';
 import Badge from 'primevue/badge';
@@ -24,6 +25,11 @@ import PrimeVue from 'primevue/config';
 import TabMenu from 'primevue/tabmenu';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
+import Skeleton from 'primevue/skeleton';
+import Card from 'primevue/card';
+
+import Image from 'primevue/image';
+
 const app = createApp(App);
 app.use(PrimeVue);
 app.component("Menubar",Menubar)
@@ -41,6 +47,10 @@ app.component("Row",Row)
 app.component("Menu",Menu)
 app.component("Button",Button)
 app.component("Dialog",Dialog)
+app.component("Skeleton",Skeleton)
+app.component("Card",Card)
+app.component("Image",Image)
+app.component("FileUpload",FileUpload)
 
 app.use(store)
 app.use(router)

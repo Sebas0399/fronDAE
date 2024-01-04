@@ -1,19 +1,64 @@
-<template lang="js">
-    <div>
-        
-    </div>
+<template >
+    <DataTable :value="insumos" tableStyle="min-width: 50rem" v-if="cargaCompleta">
+        <Column field="codigo" header="Codigo"></Column>
+        <Column field="subpartida" header="Subpartida"></Column>
+        <Column field="descripcion" header="Descripcion"></Column>
+        <Column header="Accion">
+            <template #body="{ value }">
+                <Button label="Botón" icon="pi pi-check" @click="handleButtonClick(rowData)"></Button>
+            </template>
+        </Column>
+
+    </DataTable>
+
+    <DataTable :value="insumosPosible" tableStyle="min-width: 50rem" v-else>
+        <Column field="codigo" header="Codigo">
+            <template #body>
+                    <Skeleton></Skeleton>
+                </template></Column>
+        <Column field="subpartida" header="Subpartida">
+            <template #body>
+                    <Skeleton></Skeleton>
+                </template></Column>
+        <Column field="descripcion" header="Descripcion">
+            <template #body>
+                    <Skeleton></Skeleton>
+                </template></Column>
+        <Column header="Accion">
+            <template #body="{ value }">
+                <Button label="Botón" icon="pi pi-check" @click="handleButtonClick(rowData)"></Button>
+            </template>
+        </Column>
+
+    </DataTable>
 </template>
 <script>
-import {getInsumos} from  '../helpers/insumosCliente'
+import { getInsumos } from '../helpers/insumosEmpresa'
 export default {
     data() {
         return {
-            
+            insumosPosible:new Array(4),
+            cargaCompleta: false,
+            insumos: null,
+            visible: false
+
         }
     },
-    methods: {
-        
+    mounted() {
+        this.cargarInsumos()
     },
+    methods: {
+        async cargarInsumos() {
+            await getInsumos(this.ruc).then((z) => {
+                this.insumos=z
+                this.cargaCompleta = true
+            }
+            )
+        }
+    },
+    props: {
+        ruc: String
+    }
 }
 </script>
 <style lang="">

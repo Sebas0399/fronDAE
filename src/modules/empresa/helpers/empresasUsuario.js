@@ -9,7 +9,7 @@ export const getEmpresas= async(usuarioCedula)=>{
 
 //Consumir
 const getEmpresasUsuarioApi= async (usuarioCedula)=>{
-    const url=getApiUrl(concat('/usuarios/',usuarioCedula,'/empresas'))
+    const url=getApiUrl('usuarios/'+usuarioCedula+'/empresas')
     return await axios.get(url).then(r => r.data)
    
 }
