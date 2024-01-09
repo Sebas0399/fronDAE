@@ -5,7 +5,7 @@ import Empresa from '@/modules/empresa/pages/Empresa.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/dashboard',
     name: 'home',
     component: HomeView
   },

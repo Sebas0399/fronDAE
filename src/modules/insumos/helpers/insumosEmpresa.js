@@ -3,14 +3,14 @@ import { getApiUrl  } from "../../utils/apiUtil";
 
 
 //Fachada
-export const getInsumos= async(empresaRuc)=>{
-    return await getInsumosEmpresaAPI(empresaRuc)
+export const getInsumos= (empresaRuc)=>{
+    return  getInsumosEmpresaAPI(empresaRuc)
 }
 
 //Consumir
 const getInsumosEmpresaAPI= async (empresaRuc)=>{
-    console.log(empresaRuc)
-    const url=getApiUrl('empresas/'+empresaRuc+'/insumos')
-    return await axios.get(url).then(r => r.data)
+    const url = getApiUrl('empresas/' + empresaRuc + '/insumos');
+    const response = await axios.get(url);
+    return response.data;
    
 }

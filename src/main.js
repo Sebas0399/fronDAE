@@ -29,6 +29,10 @@ import Skeleton from 'primevue/skeleton';
 import Card from 'primevue/card';
 
 import Image from 'primevue/image';
+import MultiSelect from 'primevue/multiselect';
+
+import Listbox from 'primevue/listbox';
+import Dropdown from 'primevue/dropdown';
 
 const app = createApp(App);
 app.use(PrimeVue);
@@ -50,7 +54,9 @@ app.component("Dialog",Dialog)
 app.component("Skeleton",Skeleton)
 app.component("Card",Card)
 app.component("Image",Image)
-app.component("FileUpload",FileUpload)
+app.component("MultiSelect",MultiSelect)
+app.component("Listbox",Listbox)
+app.component("Dropdown",Dropdown)
 
 app.use(store)
 app.use(router)

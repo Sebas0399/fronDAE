@@ -12,7 +12,7 @@ export default {
             items: [
                 {
                     label: 'Dashboard', icon: 'pi pi-home', command: () => {
-                        this.$router.push('/');
+                        this.$router.push('/dashboard');
                     }
                 },
                 {
