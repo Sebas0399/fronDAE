@@ -1,6 +1,10 @@
 <template lang="">
-  
   <div class="card flex justify-content-center">
+
+    <Menu :model="items" />
+    <Toast />
+    <ConfirmPopup></ConfirmPopup>
+
     <Dialog
       v-model:visible="visible"
       modal
@@ -26,12 +30,14 @@
           <label for="direccion">Direccion</label>
         </span>
       </div>
-      <div>
-        <Button
-          label="Guardar"
-          icon="pi pi-external-link"
-          @click="guardarEmpresa"
-        />
+      <div class="p-fluid">
+        <span class="p-float-label">
+          <Button
+            label="Guardar"
+            icon="pi pi-external-link"
+            @click="guardarEmpresa"
+          />
+        </span>
       </div>
     </Dialog>
   </div>
@@ -46,7 +52,7 @@
     >
       <template #header>
         <div class="flex justify-content-end">
-          <Menu :model="items" />
+          
           <span class="p-input-icon-left">
             <i class="pi pi-search" />
             <InputText v-model="filters['ruc'].value" placeholder="Buscar" />
@@ -83,14 +89,14 @@
 
       <Column header="Accion">
         <template #body="slotProps">
-          <Button
-            type="button"
-            icon="pi pi-ellipsis-v"
-            @click="toggle"
-            aria-haspopup="true"
-            aria-controls="overlay_menu"
-          />
-          <Menu ref="menu" id="overlay_menu" :model="itemsMenu" :popup="true" />
+          <span class="p-buttonset">
+            <Button label="Actualizar" icon="pi pi-refresh" />
+            <Button
+              label="Eliminar"
+              icon="pi pi-times"
+              @click="eliminarEmpresa($event, slotProps.data.id)"
+            />
+          </span>
         </template>
       </Column>
     </DataTable>
@@ -113,12 +119,13 @@
         </template>
       </Column>
       <Column header="Insumos">
-        <template #body="slotProps">
-          <Button
-            label="Ver"
-            icon="pi pi-eye"
-            @click="abrirInsumos(slotProps)"
-          ></Button>
+        <template #body>
+          <Skeleton></Skeleton>
+        </template>
+      </Column>
+      <Column header="Accion">
+        <template #body>
+          <Skeleton></Skeleton>
         </template>
       </Column>
     </DataTable>
@@ -127,7 +134,7 @@
   <Dialog
     v-model:visible="visibleInsumos"
     modal
-    header="Header"
+    header="Insumos"
     :style="{ width: '50rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
   >
@@ -137,6 +144,8 @@
 <script>
 import { getEmpresas } from "../helpers/empresasUsuario";
 import { insertEmpresa } from "../helpers/insertarNuevaEmpresa";
+import { deleteEmpresa } from "../helpers/eliminarEmpresa";
+
 import InsumosTodos from "@/modules/insumos/pages/InsumosTodos.vue";
 import { FilterMatchMode } from "primevue/api";
 
@@ -146,6 +155,7 @@ export default {
   },
   data() {
     return {
+      selectedId: null,
       filters: {
         ruc: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
@@ -163,28 +173,18 @@ export default {
         },
       },
       empresas: null,
-      itemsMenu: [
-        {
-          label: "Actualizar",
-          icon: "pi pi-refresh",
-        },
-        {
-          label: "Eliminar",
-          icon: "pi pi-times",
-        },
-      ],
 
       items: [
         {
-          items: [
-            {
+          
+            
               label: "Añadir",
               icon: "pi pi-plus",
               command: () => {
                 this.visible = true;
               },
-            },
-          ],
+            
+          
         },
       ],
     };
@@ -194,13 +194,55 @@ export default {
   },
   methods: {
     async guardarEmpresa() {
-      await insertEmpresa(this.empresa);
-      this.obtenerEmpresas();
+      const res = await insertEmpresa(this.empresa);
+
+      if (res != null) {
+        this.$toast.add({
+          severity: "success",
+          summary: "Success Message",
+          detail: "Empresa Insertada",
+          life: 3000,
+        });
+
+        this.clearForm();
+        this.obtenerEmpresas();
+        this.visible = false;
+      }
     },
     async obtenerEmpresas() {
+      this.cargaCompleta = false;
       getEmpresas("1725776650001").then((emp) => {
         this.cargaCompleta = true;
         this.empresas = emp;
+      });
+    },
+    async eliminarEmpresa(event, val) {
+      this.$confirm.require({
+        target: event.currentTarget,
+        message: "Se va a eliminar la empresa",
+        icon: "pi pi-exclamation-triangle",
+        accept: async () => {
+          
+          const res = await deleteEmpresa(val);
+          console.log(res);
+          if (res != null) {
+            this.$toast.add({
+              severity: "success",
+              summary: "Success Message",
+              detail: "Empresa Eliminada",
+              life: 3000,
+            });
+            this.obtenerEmpresas();
+          }
+        },
+        reject: () => {
+          this.$toast.add({
+            severity: "error",
+            summary: "Cancelado",
+            detail: "Eliminacion Cancelada",
+            life: 3000,
+          });
+        },
       });
     },
     abrirInsumos(val) {
@@ -208,10 +250,17 @@ export default {
       this.visibleInsumos = true;
       this.rucInsumo = val.data.ruc;
     },
-    toggle(event) {
-      this.$refs.menu.toggle(event);
+   
+    clearForm() {
+      this.empresa = {
+        nombre: null,
+        ruc: null,
+        direccion: null,
+        usuario: {
+          cedula: "1725776650001",
+        },
+      };
     },
-  
   },
 };
 </script>

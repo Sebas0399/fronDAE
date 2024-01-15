@@ -21,6 +21,7 @@
     "primeicons": "^6.0.1",
     "primevue": "^3.45.0",
     "util": "^0.12.5",
+    "vee-validate": "^4.12.4",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0",

@@ -3,17 +3,17 @@ import { getApiUrl  } from "../../utils/apiUtil";
 
 
 //Fachada
-export const insertEmpresa= async(data)=>{
+export const insertInsumo= async(data)=>{
  
-        return await insertEmpresaApi(data)
+        return await insertInsumoAPI(data)
 
    
 }
 
 //Consumir
-const insertEmpresaApi= async (data)=>{
+const insertInsumoAPI= async (data)=>{
     
-        const url=getApiUrl('empresas')
+        const url=getApiUrl('insumos')
         return await axios.post(url,data).then(r => r.data)
     
     

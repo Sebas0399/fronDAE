@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Dashboard from '@/modules/dashboard/pages/Dashboard.vue'
 import PDF from '../modules/pdf/PDF.vue'
 import Empresa from '@/modules/empresa/pages/Empresa.vue'
 
 const routes = [
   {
     path: '/dashboard',
-    name: 'home',
-    component: HomeView
+    name: 'dashboard',
+    component: Dashboard
   },
   {
     path: '/pdf',

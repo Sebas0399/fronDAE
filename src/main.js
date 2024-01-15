@@ -9,7 +9,7 @@ import ColumnGroup from 'primevue/columngroup';   // optional
 import Row from 'primevue/row'; 
 
 import Menu from 'primevue/menu';
-import FileUpload from 'primevue/fileupload';
+import ToastService from 'primevue/toastservice';
 
 import 'primeicons/primeicons.css'
 
@@ -33,9 +33,16 @@ import MultiSelect from 'primevue/multiselect';
 
 import Listbox from 'primevue/listbox';
 import Dropdown from 'primevue/dropdown';
+import Toast from 'primevue/toast';
+import ConfirmPopup from 'primevue/confirmpopup';
+import ConfirmationService from 'primevue/confirmationservice';
+import Message from 'primevue/message';
 
 const app = createApp(App);
 app.use(PrimeVue);
+app.use(ToastService);
+app.use(ConfirmationService);
+
 app.component("Menubar",Menubar)
 app.component("Badge",Badge)
 app.component("InputText",InputText)
@@ -57,6 +64,9 @@ app.component("Image",Image)
 app.component("MultiSelect",MultiSelect)
 app.component("Listbox",Listbox)
 app.component("Dropdown",Dropdown)
+app.component("Toast",Toast)
+app.component("ConfirmPopup",ConfirmPopup)
+app.component("Message",Message)
 
 app.use(store)
 app.use(router)

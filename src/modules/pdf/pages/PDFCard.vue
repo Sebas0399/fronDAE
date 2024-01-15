@@ -62,6 +62,8 @@ import { getDataProcesada } from "../helpers/pdfUtil";
 import { getEmpresas } from "@/modules/empresa/helpers/empresasUsuario";
 import { getInsumos } from "@/modules/insumos/helpers/insumosEmpresa";
 import { generarExcelFachada } from "../helpers/excelUtil";
+import { actualizarUsuario } from "../../dashboard/helpers/actualizarUsuario"
+
 import { toRaw } from "vue";
 
 export default {
@@ -102,6 +104,10 @@ export default {
     async obtenerInsumos() {
       this.insumos = await getInsumos(this.selectedEmpresa);
     },
+    async actulizarCreditos(){
+      const res=await actualizarUsuario("1725776650001")
+      
+    },
     async generarExcel() {
       await this.procesarData();
       const datos = [];
@@ -125,6 +131,7 @@ export default {
       ]);
 
       generarExcelFachada(datos);
+      await this.actulizarCreditos();
     },
   },
 };
