@@ -33,6 +33,12 @@
     </div>
     <div class="p-fluid">
       <span class="p-float-label">
+        <InputText id="tipoUnidad" v-model="insumo.tipoUnidad" />
+        <label for="tipoUnidad">Suplementario</label>
+      </span>
+    </div>
+    <div class="p-fluid">
+      <span class="p-float-label">
         <InputText id="descripcion" v-model="insumo.descripcion" />
         <label for="descripcion">Descripcion</label>
       </span>
@@ -57,6 +63,7 @@
     <Column field="complementario" header="Complementario"></Column>
 
     <Column field="suplementario" header="Suplementario"></Column>
+    <Column field="tipoUnidad" header="Tipo Unidad"></Column>
 
     <Column field="descripcion" header="Descripcion"></Column>
     <Column header="Accion">
@@ -115,6 +122,7 @@ export default {
         complementario: null,
         suplementario: null,
         descripcion: null,
+        tipoUnidad:null,
         empresa: {
           ruc: this.ruc,
         },

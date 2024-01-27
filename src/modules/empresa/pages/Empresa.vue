@@ -32,10 +32,15 @@
       </div>
       <div class="p-fluid">
         <span class="p-float-label">
-          <Button
+          <Button v-if="!actualizar"
             label="Guardar"
             icon="pi pi-external-link"
             @click="guardarEmpresa"
+          />
+          <Button v-else
+            label="Actualizar"
+            icon="pi pi-external-link"
+            @click="actualizarEmpresa"
           />
         </span>
       </div>
@@ -90,7 +95,8 @@
       <Column header="Accion">
         <template #body="slotProps">
           <span class="p-buttonset">
-            <Button label="Actualizar" icon="pi pi-refresh" />
+            <Button label="Actualizar" icon="pi pi-refresh" 
+            @click="abrirActualizar(slotProps.data)"/>
             <Button
               label="Eliminar"
               icon="pi pi-times"
@@ -145,6 +151,7 @@
 import { getEmpresas } from "../helpers/empresasUsuario";
 import { insertEmpresa } from "../helpers/insertarNuevaEmpresa";
 import { deleteEmpresa } from "../helpers/eliminarEmpresa";
+import { actualizarEmpresa } from "../helpers/actualizarEmpresa";
 
 import InsumosTodos from "@/modules/insumos/pages/InsumosTodos.vue";
 import { FilterMatchMode } from "primevue/api";
@@ -155,6 +162,7 @@ export default {
   },
   data() {
     return {
+      actualizar:false,
       selectedId: null,
       filters: {
         ruc: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -215,6 +223,21 @@ export default {
         this.cargaCompleta = true;
         this.empresas = emp;
       });
+    },
+    async abrirActualizar(data){
+      this.actualizar=true
+      this.visible=true
+      this.empresa= {
+        nombre: data.nombre,
+        ruc: data.ruc,
+        direccion: data.direccion,
+       
+      }
+      //await actualizarEmpresa(data);
+      //this.actualizar=false
+      //this.visible=false
+      
+
     },
     async eliminarEmpresa(event, val) {
       this.$confirm.require({
