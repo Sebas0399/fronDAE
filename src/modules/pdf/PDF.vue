@@ -31,7 +31,7 @@
 <script>
 // Ajusta la ruta según la ubicación real de tu archivo helper
 import { getRutasFachada } from "./helpers/fileHelper";
-import { getUsuario } from "@/modules/dashboard/helpers/getUsuario";
+import { getUsuario } from "@/modules/usuario/helpers/getUsuario";
 import PDFCard from "./pages/PDFCard.vue";
 export default {
   components: {

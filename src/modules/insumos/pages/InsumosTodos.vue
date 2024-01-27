@@ -1,5 +1,7 @@
 <template>
+  
   <Menu :model="items" />
+  <Toast />
   <Dialog
     v-model:visible="visible"
     modal
@@ -7,6 +9,7 @@
     :style="{ width: '50rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
   >
+
     <div class="p-fluid">
       <span class="p-float-label">
         <InputText id="codigo" v-model="insumo.codigo" />
@@ -33,6 +36,12 @@
     </div>
     <div class="p-fluid">
       <span class="p-float-label">
+        <InputText id="tipoUnidad" v-model="insumo.tipoUnidad" />
+        <label for="tipoUnidad">Tipo Unidad</label>
+      </span>
+    </div>
+    <div class="p-fluid">
+      <span class="p-float-label">
         <InputText id="descripcion" v-model="insumo.descripcion" />
         <label for="descripcion">Descripcion</label>
       </span>
@@ -45,7 +54,9 @@
           @click="guardarInsumo"
         />
       </span>
-    </div>
+    
+  </div>
+
   </Dialog>
   <DataTable
     :value="insumos"
@@ -57,6 +68,7 @@
     <Column field="complementario" header="Complementario"></Column>
 
     <Column field="suplementario" header="Suplementario"></Column>
+    <Column field="tipoUnidad" header="Tipo Unidad"></Column>
 
     <Column field="descripcion" header="Descripcion"></Column>
     <Column header="Accion">
@@ -81,6 +93,9 @@
       <template #body> <Skeleton></Skeleton> </template
     ></Column>
     <Column field="suplementario" header="Suplementario">
+      <template #body> <Skeleton></Skeleton> </template
+    ></Column>
+    <Column field="tipoUnidad" header="Tipo Unidad">
       <template #body> <Skeleton></Skeleton> </template
     ></Column>
     <Column field="descripcion" header="Descripcion">
@@ -115,6 +130,7 @@ export default {
         complementario: null,
         suplementario: null,
         descripcion: null,
+        tipoUnidad:null,
         empresa: {
           ruc: this.ruc,
         },
@@ -135,10 +151,24 @@ export default {
     console.log(this.insumo);
   },
   methods: {
+    
+    
     async guardarInsumo() {
       await insertInsumo(this.insumo).then((z) => {
         //limpiar formulario
-         this.cargarInsumos();
+          if(z!=null){
+            this.$toast.add({
+          severity: "success",
+          summary: "Success Message",
+          detail: "Insumo Insertado",
+          life: 3000,
+        });
+        this.clearForm();
+
+            this.cargarInsumos();
+            this.visible = false;
+
+          }
       });
     },
     async cargarInsumos() {
@@ -150,10 +180,27 @@ export default {
         console.log(z);
       });
     },
+    clearForm() {
+      this.insumo= {
+        codigo: null,
+        subpartida: null,
+        complementario: null,
+        suplementario: null,
+        descripcion: null,
+        tipoUnidad:null,
+        empresa: {
+          ruc: this.ruc,
+        },
+      }
+    }
   },
   props: {
     ruc: String,
   },
 };
 </script>
-<style lang=""></style>
+<style scoped>
+span {
+  margin-top: 25px;
+}
+</style>

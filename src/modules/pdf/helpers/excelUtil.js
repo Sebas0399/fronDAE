@@ -58,7 +58,9 @@ const generarExcel = async (data) => {
     ,
     { origin: -1 }
   );
- 
+  const opt={
+    bookType:"biff2"
+  }
   XLSX.utils.book_append_sheet(doc, hoja, "xd");
-  XLSX.writeFile(doc, "algo.xls");
+  XLSX.writeFile(doc, "algo.xls",opt);
 };
