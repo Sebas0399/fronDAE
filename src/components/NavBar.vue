@@ -1,15 +1,28 @@
 
 <template>
     <div class="card">
-        <TabMenu :model="items" />
+        <TabMenu :model="items" :active-index="active"/>
     </div>
+    
 </template>
 
 <script>
 export default {
     data() {
         return {
+            active:0,
+            
             items: [
+            {
+                    label: 'Login', icon: 'pi pi-home', command: () => {
+                        this.$router.push('/login');
+                    }
+                },
+                {
+                    label: 'Registro', icon: 'pi pi-home', command: () => {
+                        this.$router.push('/registro');
+                    }
+                },
                 {
                     label: 'Dashboard', icon: 'pi pi-home', command: () => {
                         this.$router.push('/dashboard');
@@ -23,6 +36,11 @@ export default {
                 {
                     label: 'Run', icon: 'pi pi-list', command: () => {
                         this.$router.push('/pdf');
+                    }
+                },
+                {
+                    label: 'Usuario', icon: 'pi pi-list', command: () => {
+                        this.$router.push('/usuario');
                     }
                 },
 

@@ -36,9 +36,10 @@
             :options="insumos"
             :selectAll="false"
             optionLabel="codigo"
+            display="chip"
             placeholder="Seleccione el insumo"
-            :maxSelectedLabels="3"
-            class="w-full md:w-20rem"
+            :maxSelectedLabels="2"
+            class="w-full md:w-14rem"
           />
           <MultiSelect
             v-else-if="selectedEmpresa != null"
@@ -48,8 +49,9 @@
             :selectAll="false"
             optionLabel="codigo"
             placeholder="Seleccione el insumo"
-            :maxSelectedLabels="3"
-            class="w-full md:w-20rem"
+            display="chip"
+            :maxSelectedLabels="2"
+            class="w-full md:w-14rem "
           />
         </div>
         <Button @click="generarExcel">Procesar</Button>
@@ -62,7 +64,7 @@ import { getDataProcesada } from "../helpers/pdfUtil";
 import { getEmpresas } from "@/modules/empresa/helpers/empresasUsuario";
 import { getInsumos } from "@/modules/insumos/helpers/insumosEmpresa";
 import { generarExcelFachada } from "../helpers/excelUtil";
-import { actualizarUsuario } from "../../dashboard/helpers/actualizarUsuario"
+import { actualizarUsuario } from "../../usuario/helpers/actualizarUsuario"
 
 import { toRaw } from "vue";
 
@@ -116,19 +118,24 @@ export default {
    
 
       const tot = parseInt(data[0]) + parseInt(data[1]);
-      datos.push([
-        "",
-        insumo.codigo,
-        insumo.subpartida,
-        insumo.descripcion,
-        insumo.tipoUnidad,
+      var contador=1;
+      this.selectedInsumo.forEach(element => {
+        datos.push([
+        "00000"+contador,
+        element.codigo,
+        element.subpartida,
+        element.descripcion,
+        element.tipoUnidad,
         data[0],
         "0",
         data[1],
         tot,
-        insumo.complementario,
-        insumo.suplementario,
+        element.complementario,
+        element.suplementario,
       ]);
+contador++;
+      });
+      
 
       generarExcelFachada(datos);
       await this.actulizarCreditos();
@@ -136,4 +143,12 @@ export default {
   },
 };
 </script>
-<style lang=""></style>
+<style scoped>
+div {
+  margin-top: 15px;
+}
+button{
+  margin-top: 15px;
+
+};
+</style>

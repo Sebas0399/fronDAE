@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -7,13 +8,13 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';   // optional
 import Row from 'primevue/row'; 
+import Lara from '@/presets/lara';      //import preset        
 
 import Menu from 'primevue/menu';
 import ToastService from 'primevue/toastservice';
 
 import 'primeicons/primeicons.css'
 
-//in main.js
 import 'primevue/resources/themes/md-light-indigo/theme.css'
 
 import Menubar from 'primevue/menubar';

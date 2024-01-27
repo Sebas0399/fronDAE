@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import { getUsuario } from "../helpers/getUsuario";
+import { getUsuario } from "@/modules/usuario/helpers/getUsuario";
 export default {
   data() {
     return {

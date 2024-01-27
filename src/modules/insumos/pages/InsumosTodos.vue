@@ -1,5 +1,7 @@
 <template>
+  
   <Menu :model="items" />
+  <Toast />
   <Dialog
     v-model:visible="visible"
     modal
@@ -7,6 +9,7 @@
     :style="{ width: '50rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
   >
+
     <div class="p-fluid">
       <span class="p-float-label">
         <InputText id="codigo" v-model="insumo.codigo" />
@@ -34,7 +37,8 @@
     <div class="p-fluid">
       <span class="p-float-label">
         <InputText id="tipoUnidad" v-model="insumo.tipoUnidad" />
-        <label for="tipoUnidad">Suplementario</label>
+
+        <label for="tipoUnidad">Tipo Unidad</label>
       </span>
     </div>
     <div class="p-fluid">
@@ -51,7 +55,9 @@
           @click="guardarInsumo"
         />
       </span>
-    </div>
+    
+  </div>
+
   </Dialog>
   <DataTable
     :value="insumos"
@@ -88,6 +94,9 @@
       <template #body> <Skeleton></Skeleton> </template
     ></Column>
     <Column field="suplementario" header="Suplementario">
+      <template #body> <Skeleton></Skeleton> </template
+    ></Column>
+    <Column field="tipoUnidad" header="Tipo Unidad">
       <template #body> <Skeleton></Skeleton> </template
     ></Column>
     <Column field="descripcion" header="Descripcion">
@@ -143,10 +152,24 @@ export default {
     console.log(this.insumo);
   },
   methods: {
+    
+    
     async guardarInsumo() {
       await insertInsumo(this.insumo).then((z) => {
         //limpiar formulario
-         this.cargarInsumos();
+          if(z!=null){
+            this.$toast.add({
+          severity: "success",
+          summary: "Success Message",
+          detail: "Insumo Insertado",
+          life: 3000,
+        });
+        this.clearForm();
+
+            this.cargarInsumos();
+            this.visible = false;
+
+          }
       });
     },
     async cargarInsumos() {
@@ -158,10 +181,27 @@ export default {
         console.log(z);
       });
     },
+    clearForm() {
+      this.insumo= {
+        codigo: null,
+        subpartida: null,
+        complementario: null,
+        suplementario: null,
+        descripcion: null,
+        tipoUnidad:null,
+        empresa: {
+          ruc: this.ruc,
+        },
+      }
+    }
   },
   props: {
     ruc: String,
   },
 };
 </script>
-<style lang=""></style>
+<style scoped>
+span {
+  margin-top: 25px;
+}
+</style>
