@@ -8,7 +8,6 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';   // optional
 import Row from 'primevue/row'; 
-import Lara from '@/presets/lara';      //import preset        
 
 import Menu from 'primevue/menu';
 import ToastService from 'primevue/toastservice';
@@ -31,7 +30,7 @@ import Card from 'primevue/card';
 
 import Image from 'primevue/image';
 import MultiSelect from 'primevue/multiselect';
-
+import Password from 'primevue/password';
 import Listbox from 'primevue/listbox';
 import Dropdown from 'primevue/dropdown';
 import Toast from 'primevue/toast';
@@ -68,6 +67,7 @@ app.component("Dropdown",Dropdown)
 app.component("Toast",Toast)
 app.component("ConfirmPopup",ConfirmPopup)
 app.component("Message",Message)
+app.component("Password",Password)
 
 app.use(store)
 app.use(router)

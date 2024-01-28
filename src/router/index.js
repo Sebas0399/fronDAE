@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store';
 import Dashboard from '@/modules/dashboard/pages/Dashboard.vue'
 import PDF from '../modules/pdf/PDF.vue'
 import Empresa from '@/modules/empresa/pages/Empresa.vue'
@@ -20,7 +21,10 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: {
+      rutaProtegida: true,
+    },
   },
   {
     path: '/usuario',
@@ -52,6 +56,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+router.beforeEach((to,from,next) => {
+  const rutaIsProtected = to.matched.some(record => record.meta.rutaProtegida)
+  console.log(store.state.token)
+  if(rutaIsProtected && store.state.token === null) {
+    next('/login')
+  }else if(!rutaIsProtected && !!store.state.token){
+    next('/dashboard') //o cualquier ruta donde quieras que vuelva
+  }else{
+    next()
+  }
 })
 
 export default router
