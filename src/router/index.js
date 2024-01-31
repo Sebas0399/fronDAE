@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import store from '../store';
 import Dashboard from '@/modules/dashboard/pages/Dashboard.vue'
 import PDF from '../modules/pdf/PDF.vue'
@@ -63,7 +63,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
 router.beforeEach((to,from,next) => {
