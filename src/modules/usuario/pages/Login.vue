@@ -44,14 +44,15 @@ import { useToast } from "primevue/usetoast";
 import { useField, useForm } from "vee-validate";
 import { autenticarUsuario } from "../helpers/auth.js";
 import { ref } from "vue";
-import store from '@/store';
+import store from "@/store";
+import router from "@/router";
 
 export default {
   methods: {},
   setup() {
     const loading = ref(false);
     const { handleSubmit, resetForm } = useForm();
-   
+
     const { value: cedula, errorMessage: errorMessageCedula } = useField(
       "cedula",
       validateField
@@ -68,39 +69,42 @@ export default {
 
       return true;
     }
-   
 
     const onSubmit = handleSubmit((values) => {
       loading.value = true;
       if (
-      
         values.cedula &&
         values.cedula.length > 0 &&
         values.password &&
         values.password.length > 7
       ) {
         const usuario = {
-          
           userName: values.cedula,
           password: values.password,
         };
         autenticarUsuario(usuario)
-        
           .then((x) => {
             toast.add({
               severity: "info",
               summary: "Login Exitoso",
-              detail:x,
+
               life: 3000,
             });
-           
-            try {
-                store.commit('setToken',x.jwt);
 
+            try {
+              localStorage.setItem("token", x.jwt);
+              localStorage.setItem("isLoggedIn", true);
+              //store.commit('setToken',x.jwt);
+              //store.commit('setToken',x.jwt);
+
+              //state.isLoggedIn = true;
+              //console.log(store.state.token)
+              window.location.reload()
+              router.push("/dashboard");
             } catch (error) {
-                console.log(error)
+              console.log(error);
             }
-            
+
             loading.value = false;
             resetForm();
           })
@@ -108,7 +112,7 @@ export default {
             toast.add({
               severity: "error",
               summary: "Ay no",
-              detail:error,
+              detail: error,
 
               life: 3000,
             });
@@ -119,12 +123,12 @@ export default {
 
     return {
       loading,
-      
+
       cedula,
       password,
       handleSubmit,
       onSubmit,
-      
+
       errorMessageCedula,
       errorMessagePassword,
     };

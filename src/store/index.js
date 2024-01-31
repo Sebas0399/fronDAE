@@ -3,21 +3,23 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     token: null,
+    isLoggedIn: false,
   },
   getters: {
-    getToken(){
-      return state.token;
-    }
+    
   },
   mutations: {
     setToken(state, token) {
       state.token = token;
+      state.isLoggedIn = true; // Cambia a true cuando el usuario inicia sesión
+    },
+    clearToken(state) {
+      state.token = null;
+      state.isLoggedIn = false; // Cambia a false cuando el usuario cierra sesión
     },
   },
   actions: {
-    setToken(context, token) {
-      context.token = token;
-    },
+    
   },
   modules: {},
 });

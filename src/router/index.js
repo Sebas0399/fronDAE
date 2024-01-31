@@ -29,17 +29,26 @@ const routes = [
   {
     path: '/usuario',
     name: 'usuario',
-    component: Usuario
+    component: Usuario,
+    meta: {
+      rutaProtegida: true,
+    },
   },
   {
     path: '/pdf',
     name: 'pdf',
-    component: PDF
+    component: PDF,
+    meta: {
+      rutaProtegida: true,
+    },
   },
   {
     path: '/empresa',
     name: 'empresa',
-    component: Empresa
+    component: Empresa,
+    meta: {
+      rutaProtegida: true,
+    },
   },
   {
     path: '/about',
@@ -59,10 +68,10 @@ const router = createRouter({
 })
 router.beforeEach((to,from,next) => {
   const rutaIsProtected = to.matched.some(record => record.meta.rutaProtegida)
-  console.log(store.state.token)
-  if(rutaIsProtected && store.state.token === null) {
+  console.log(localStorage.getItem('token'))
+  if(rutaIsProtected && localStorage.getItem('token') === null) {
     next('/login')
-  }else if(!rutaIsProtected && !!store.state.token){
+  }else if(!rutaIsProtected && !!localStorage.getItem('token')){
     next('/dashboard') //o cualquier ruta donde quieras que vuelva
   }else{
     next()
