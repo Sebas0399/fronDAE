@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     async obtenerUsuario() {
-      await getUsuario("1725776650001").then((usu) => {
+      await getUsuario().then((usu) => {
         this.usuario = usu;
       });
     },

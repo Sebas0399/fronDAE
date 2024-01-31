@@ -1,6 +1,5 @@
 <template lang="">
   <div class="card flex justify-content-center">
-
     <Menu :model="items" />
     <Toast />
     <ConfirmPopup></ConfirmPopup>
@@ -32,12 +31,14 @@
       </div>
       <div class="p-fluid">
         <span class="p-float-label">
-          <Button v-if="!actualizar"
+          <Button
+            v-if="!actualizar"
             label="Guardar"
             icon="pi pi-external-link"
             @click="guardarEmpresa"
           />
-          <Button v-else
+          <Button
+            v-else
             label="Actualizar"
             icon="pi pi-external-link"
             @click="actualizarEmpresa"
@@ -57,7 +58,6 @@
     >
       <template #header>
         <div class="flex justify-content-end">
-          
           <span class="p-input-icon-left">
             <i class="pi pi-search" />
             <InputText v-model="filters['ruc'].value" placeholder="Buscar" />
@@ -95,8 +95,11 @@
       <Column header="Accion">
         <template #body="slotProps">
           <span class="p-buttonset">
-            <Button label="Actualizar" icon="pi pi-refresh" 
-            @click="abrirActualizar(slotProps.data)"/>
+            <Button
+              label="Actualizar"
+              icon="pi pi-refresh"
+              @click="abrirActualizar(slotProps.data)"
+            />
             <Button
               label="Eliminar"
               icon="pi pi-times"
@@ -162,7 +165,7 @@ export default {
   },
   data() {
     return {
-      actualizar:false,
+      actualizar: false,
       selectedId: null,
       filters: {
         ruc: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -177,22 +180,18 @@ export default {
         ruc: null,
         direccion: null,
         usuario: {
-          cedula: "1725776650001",
+          cedula: null,
         },
       },
       empresas: null,
 
       items: [
         {
-          
-            
-              label: "Añadir",
-              icon: "pi pi-plus",
-              command: () => {
-                this.visible = true;
-              },
-            
-          
+          label: "Añadir",
+          icon: "pi pi-plus",
+          command: () => {
+            this.visible = true;
+          },
         },
       ],
     };
@@ -219,25 +218,24 @@ export default {
     },
     async obtenerEmpresas() {
       this.cargaCompleta = false;
-      getEmpresas("1725776650001").then((emp) => {
+      getEmpresas().then((emp) => {
         this.cargaCompleta = true;
         this.empresas = emp;
+      }).catch(()=>{
+        this.empresas = null;
       });
     },
-    async abrirActualizar(data){
-      this.actualizar=true
-      this.visible=true
-      this.empresa= {
+    async abrirActualizar(data) {
+      this.actualizar = true;
+      this.visible = true;
+      this.empresa = {
         nombre: data.nombre,
         ruc: data.ruc,
         direccion: data.direccion,
-       
-      }
+      };
       //await actualizarEmpresa(data);
       //this.actualizar=false
       //this.visible=false
-      
-
     },
     async eliminarEmpresa(event, val) {
       this.$confirm.require({
@@ -245,7 +243,6 @@ export default {
         message: "Se va a eliminar la empresa",
         icon: "pi pi-exclamation-triangle",
         accept: async () => {
-          
           const res = await deleteEmpresa(val);
           console.log(res);
           if (res != null) {
@@ -273,7 +270,7 @@ export default {
       this.visibleInsumos = true;
       this.rucInsumo = val.data.ruc;
     },
-   
+
     clearForm() {
       this.empresa = {
         nombre: null,
