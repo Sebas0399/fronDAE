@@ -54,7 +54,7 @@ export default {
       this.pdfRutas = await getRutasFachada(event);
     },
     async obetnerUsuario() {
-      const usu = await getUsuario("1725776650001");
+      const usu = await getUsuario();
       this.creditos = usu.creditos;
     },
   },

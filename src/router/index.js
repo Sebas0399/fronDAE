@@ -40,6 +40,7 @@ const routes = [
     component: PDF,
     meta: {
       rutaProtegida: true,
+      
     },
   },
   {

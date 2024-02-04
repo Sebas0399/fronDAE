@@ -12,7 +12,6 @@ import * as jose from "jose";
 import cedulaService from './modules/utils/tokenUtils';
 
 export default {
- 
   data() {
     return {
       itemsA: [
