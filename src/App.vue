@@ -1,5 +1,5 @@
 <template>
-  <NavBar v-if="token != null" :items="itemsA" usuario="true"></NavBar>
+  <NavBar v-if="token != null" :items="itemsA" :usuario="true"></NavBar>
   <NavBar v-else :items="itemsLogin"></NavBar>
   <router-view></router-view>
   <div>
@@ -9,17 +9,10 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import * as jose from "jose";
+import cedulaService from './modules/utils/tokenUtils';
 
 export default {
-  watch: {
-    token(newTok, oldTok) {
-      if (newTok == null) {
-        this.$refs.navbar.items = this.itemsLogin;
-      } else {
-        this.$refs.navbar.items = this.itemsA;
-      }
-    },
-  },
+ 
   data() {
     return {
       itemsA: [
@@ -81,13 +74,10 @@ export default {
     };
   },
   mounted() {
-    const tokenString = localStorage.getItem("token");
+    const tokenString = cedulaService.getToken();
 
     if (tokenString != null) {
-      // Parsea el token a un objeto si es válido
       this.token = jose.decodeJwt(tokenString, { complete: true });
-
-      // Inicia el temporizador con las marcas de tiempo del token
       this.iniciarTemporizador();
     } else {
       console.error("No se encontró el token en el Local Storage.");
@@ -114,10 +104,13 @@ export default {
           // El token ha expirado, puedes tomar medidas como cerrar sesión o solicitar un nuevo token
           this.tiempoRestante = "Token expirado";
           localStorage.removeItem("token");
-          //this.token=null;
+
           localStorage.setItem("isLoggedIn", false);
           this.detenerTemporizador();
-          this.$router.push("/dashboard");
+          window.location.reload()
+
+          this.$router.push("/login");
+
         } else {
           this.tiempoRestante = `${tiempoRestanteSegundos} segundos`;
         }

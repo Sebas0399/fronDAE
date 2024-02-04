@@ -4,7 +4,6 @@ import { getApiUrl  } from "../../utils/apiUtil";
 
 //Fachada
 export const registroUsuario= async(usuario)=>{
-    console.log(usuario)
     return await registroUsuarioApi(usuario)
 }
 

@@ -1,5 +1,3 @@
-// tuArchivo.js
-
 import * as jose from "jose";
 
 // Define la función getCedula como una clase para aplicar el patrón Singleton
@@ -8,10 +6,19 @@ class CedulaService {
     // Puedes inicializar aquí cualquier estado que necesites
   }
 
-  getCedula() {
+  getToken() {
     const tokenString = localStorage.getItem("token");
     if (tokenString !== null) {
-      return jose.decodeJwt(tokenString, { complete: true }).name;
+      return tokenString;
+    } else {
+      return null;
+    }
+  }
+
+  getCedula() {
+    const token = this.getToken();
+    if (token !== null) {
+      return jose.decodeJwt(token, { complete: true }).name;
     } else {
       return null;
     }
