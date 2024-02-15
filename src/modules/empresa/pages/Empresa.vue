@@ -154,7 +154,7 @@
 import { getEmpresas } from "../helpers/empresasUsuario";
 import { insertEmpresa } from "../helpers/insertarNuevaEmpresa";
 import { deleteEmpresa } from "../helpers/eliminarEmpresa";
-import { actualizarEmpresa } from "../helpers/actualizarEmpresa";
+import { updateEmpresa } from "../helpers/actualizarEmpresa";
 
 import InsumosTodos from "@/modules/insumos/pages/InsumosTodos.vue";
 import { FilterMatchMode } from "primevue/api";
@@ -218,14 +218,16 @@ export default {
     },
     async obtenerEmpresas() {
       this.cargaCompleta = false;
-      getEmpresas().then((emp) => {
-        this.cargaCompleta = true;
-        this.empresas = emp;
-      }).catch(()=>{
-        this.empresas = null;
-      });
+      getEmpresas()
+        .then((emp) => {
+          this.cargaCompleta = true;
+          this.empresas = emp;
+        })
+        .catch(() => {
+          this.empresas = null;
+        });
     },
-    async abrirActualizar(data) {
+    abrirActualizar(data) {
       this.actualizar = true;
       this.visible = true;
       this.empresa = {
@@ -233,9 +235,26 @@ export default {
         ruc: data.ruc,
         direccion: data.direccion,
       };
-      //await actualizarEmpresa(data);
-      //this.actualizar=false
-      //this.visible=false
+
+    },
+    async actualizarEmpresa(){
+      await updateEmpresa(this.empresa).then((data) => {
+        this.$toast.add({
+              severity: "success",
+              summary: "Success Message",
+              detail: "Empresa Actualizada",
+              life: 3000,
+            });
+        this.actualizar = false;
+        this.visible = false;
+      }).catch((error)=>{
+        this.$toast.add({
+              severity: "error",
+              summary: "Error Message",
+              detail: error,
+              life: 3000,
+            });
+      });
     },
     async eliminarEmpresa(event, val) {
       this.$confirm.require({

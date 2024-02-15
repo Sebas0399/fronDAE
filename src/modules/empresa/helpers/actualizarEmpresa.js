@@ -3,7 +3,7 @@ import { getApiUrl  } from "../../utils/apiUtil";
 
 
 //Fachada
-export const actualizarEmpresa= async(data)=>{
+export const updateEmpresa= async(data)=>{
     return await actualizarEmpresaApi(data)
 }
 

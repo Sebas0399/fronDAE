@@ -1,21 +1,5 @@
 <template lang="">
   <div class="card">
-    <MultiSelect v-model="selectedItem" :options="insumos" optionLabel="name" placeholder="Select Countries" display="chip" class="w-full md:w-20rem">
-    <template #option="slotProps">
-        <div class="contenedor-item">
-            <div>{{ slotProps.option.codigo }}
-              <InputNumber v-model="slotProps.option.cantidad" :inputId="slotProps.option.codigo " 
-            showButtons buttonLayout="horizontal" :step="1" decrementButtonClass="p-button-danger" 
-            incrementButtonClass="p-button-success" mode="decimal" :min="0" :max="100"/></div>
-            
-        </div>
-    </template>
-    <template #footer>
-        <div class="py-2 px-3">
-            <b>{{ selectedCountries ? selectedCountries.length : 0 }}</b> item{{ (selectedCountries ? selectedCountries.length : 0) > 1 ? 's' : '' }} selected.
-        </div>
-    </template>
-</MultiSelect>
     <Card>
       <template #content>
         <Image :src="require('@/assets/pdfLogo.png')" alt="Image" width="50" />
@@ -48,25 +32,67 @@
             v-if="insumos != null"
             v-model="selectedInsumo"
             :options="insumos"
-            :selectAll="false"
-            optionLabel="codigo"
+            optionLabel="name"
+            placeholder="Select Countries"
             display="chip"
-            placeholder="Seleccione el insumo"
-            :maxSelectedLabels="2"
-            class="w-full md:w-14rem"
-          />
+            class="w-full md:w-20rem"
+          >
+            <template #option="slotProps">
+              <div class="contenedor-item">
+                <div>
+                  {{ slotProps.option.codigo }}
+                </div>
+                <div>
+                  <InputNumber
+                    v-model="slotProps.option.cantidad"
+                    :inputId="slotProps.option.codigo"
+                    showButtons
+                    buttonLayout="horizontal"
+                    :step="1"
+                    decrementButtonClass="p-button-danger"
+                    incrementButtonClass="p-button-success"
+                    mode="decimal"
+                    :min="0"
+                    :max="100"
+                    @click.stop
+                  />
+                </div>
+              </div>
+            </template>
+          </MultiSelect>
           <MultiSelect
             v-else-if="selectedEmpresa != null"
             loading
             v-model="selectedInsumo"
             :options="insumos"
-            :selectAll="false"
-            optionLabel="codigo"
-            placeholder="Seleccione el insumo"
+            optionLabel="name"
+            placeholder="Select Countries"
             display="chip"
-            :maxSelectedLabels="2"
-            class="w-full md:w-14rem "
-          />
+            class="w-full md:w-20rem"
+          >
+            <template #option="slotProps">
+              <div class="contenedor-item">
+                <div>
+                  {{ slotProps.option.codigo }}
+                </div>
+                <div>
+                  <InputNumber
+                    v-model="slotProps.option.cantidad"
+                    :inputId="slotProps.option.codigo"
+                    showButtons
+                    buttonLayout="horizontal"
+                    :step="1"
+                    decrementButtonClass="p-button-danger"
+                    incrementButtonClass="p-button-success"
+                    mode="decimal"
+                    :min="0"
+                    :max="100"
+                    @click.stop
+                  />
+                </div>
+              </div>
+            </template>
+          </MultiSelect>
         </div>
         <Button @click="generarExcel">Procesar</Button>
       </template>
@@ -78,7 +104,7 @@ import { getDataProcesada } from "../helpers/pdfUtil";
 import { getEmpresas } from "@/modules/empresa/helpers/empresasUsuario";
 import { getInsumos } from "@/modules/insumos/helpers/insumosEmpresa";
 import { generarExcelFachada } from "../helpers/excelUtil";
-import { actualizarUsuario } from "../../usuario/helpers/actualizarUsuario"
+import { actualizarUsuario } from "../../usuario/helpers/actualizarUsuario";
 
 import { toRaw } from "vue";
 
@@ -118,41 +144,42 @@ export default {
       });
     },
     async obtenerInsumos() {
-      this.insumos = await getInsumos(this.selectedEmpresa);
+      await getInsumos(this.selectedEmpresa).then((x) => {
+        // this.insumos = x;
+        this.insumos = x.map((empresa) => ({ ...empresa, cantidad: 1 }));
+      });
     },
-    async actulizarCreditos(){
-      const res=await actualizarUsuario("1725776650001")
-      
+    async actulizarCreditos() {
+      const res = await actualizarUsuario("1725776650001");
     },
     async generarExcel() {
       await this.procesarData();
       const datos = [];
       const insumo = toRaw(this.selectedInsumo[0]);
       const data = toRaw(this.data[0]);
-   
 
       const tot = parseInt(data[0]) + parseInt(data[1]);
-      var contador=1;
-      this.selectedInsumo.forEach(element => {
+      var contador = 1;
+      this.selectedInsumo.forEach((element) => {
         datos.push([
-        "00000"+contador,
-        element.codigo,
-        element.subpartida,
-        element.descripcion,
-        element.tipoUnidad,
-        data[0],
-        "0",
-        data[1],
-        tot,
-        element.complementario,
-        element.suplementario,
-      ]);
-contador++;
+          "00000" + contador,
+          element.codigo,
+          element.subpartida,
+          element.descripcion,
+          element.tipoUnidad,
+          data[0]*element.cantidad,
+          "0",
+          data[1]*element.cantidad,
+          tot*element.cantidad,
+          element.complementario,
+          element.suplementario,
+        ]);
+        contador++;
       });
-      
-      console.log(datos)
-      
+
+
       generarExcelFachada(datos);
+      this.$emit('procesar');
       await this.actulizarCreditos();
     },
   },
@@ -162,14 +189,13 @@ contador++;
 div {
   margin-top: 15px;
 }
-button{
-  margin-top: 15px;
-
-};
-.contenedor-item{
+button {
+  margin-top: 10px;
+}
+.contenedor-item {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 10px;
-  grid-auto-rows: minmax(100px, auto);
+
+  grid-auto-rows: minmax(auto, auto);
 }
 </style>

@@ -35,6 +35,7 @@ import Listbox from 'primevue/listbox';
 import Dropdown from 'primevue/dropdown';
 import Toast from 'primevue/toast';
 import ConfirmPopup from 'primevue/confirmpopup';
+import ConfirmDialog from 'primevue/confirmdialog';
 import ConfirmationService from 'primevue/confirmationservice';
 import Message from 'primevue/message';
 import InputNumber from 'primevue/inputnumber';
@@ -44,6 +45,8 @@ app.use(ToastService);
 app.use(ConfirmationService);
 
 app.component("Menubar",Menubar)
+app.component("ConfirmDialog",ConfirmDialog)
+
 app.component("Badge",Badge)
 app.component("InputText",InputText)
 app.component("Avatar",Avatar)

@@ -2,6 +2,7 @@
   <NavBar v-if="token != null" :items="itemsA" :usuario="true"></NavBar>
   <NavBar v-else :items="itemsLogin"></NavBar>
   <router-view></router-view>
+  <ConfirmDialog></ConfirmDialog>
   <div>
     <p>Token expirará en: {{ tiempoRestante }}</p>
   </div>
@@ -9,9 +10,50 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import * as jose from "jose";
-import cedulaService from './modules/utils/tokenUtils';
+import cedulaService from "./modules/utils/tokenUtils";
+import { renovarUsuario } from "./modules/usuario/helpers/auth";
 
 export default {
+  watch: {
+    tiempoRestante(nuevo, anterior) {
+      if (nuevo < 1700) {
+        this.$confirm.require({
+          message: "Su sesión esta por terminar",
+          header: "Desea renovar",
+          icon: "pi pi-exclamation-triangle",
+          rejectClass: "p-button-secondary p-button-outlined",
+          rejectLabel: "No",
+          acceptLabel: "Si",
+          accept: () => {
+            this.$toast.add({
+              severity: "info",
+              summary: "Confirmed",
+              detail: "You have accepted",
+              life: 3000,
+            });
+            //renovar token
+            renovarUsuario(cedulaService.getToken()).then((x)=>{
+              localStorage.setItem("token", x.jwt);
+              localStorage.setItem("isLoggedIn", true);
+            })
+          },
+          reject: () => {
+            this.$toast.add({
+              severity: "error",
+              summary: "Rejected",
+              detail: "You have rejected",
+              life: 3000,
+            });
+            this.tiempoRestante = null;
+            localStorage.removeItem("token");
+            localStorage.setItem("isLoggedIn", false);
+            this.detenerTemporizador();
+            window.location.reload();
+          },
+        });
+      }
+    },
+  },
   data() {
     return {
       itemsA: [
@@ -67,7 +109,7 @@ export default {
           },
         },
       ],
-      tiempoRestante: "Calculando tiempo restante...",
+      tiempoRestante: null,
       temporizador: null,
       token: null,
     };
@@ -84,20 +126,17 @@ export default {
   },
   methods: {
     iniciarTemporizador() {
-      this.actualizarTiempoRestante(); // Actualiza el tiempo restante al cargar el componente
-
-      // Configura un temporizador para actualizar el tiempo restante cada segundo
+      this.actualizarTiempoRestante();
       this.temporizador = setInterval(() => {
         this.actualizarTiempoRestante();
       }, 1000);
     },
     detenerTemporizador() {
-      // Detiene el temporizador cuando el componente se destruye o ya no es necesario
       clearInterval(this.temporizador);
     },
     actualizarTiempoRestante() {
       if (this.token) {
-        const ahora = Math.floor(new Date().getTime() / 1000); // Marca de tiempo actual en segundos
+        const ahora = Math.floor(new Date().getTime() / 1000);
         const tiempoRestanteSegundos = this.token.exp - ahora;
         if (tiempoRestanteSegundos <= 0) {
           // El token ha expirado, puedes tomar medidas como cerrar sesión o solicitar un nuevo token
@@ -106,12 +145,11 @@ export default {
 
           localStorage.setItem("isLoggedIn", false);
           this.detenerTemporizador();
-          window.location.reload()
+          window.location.reload();
 
           this.$router.push("/login");
-
         } else {
-          this.tiempoRestante = `${tiempoRestanteSegundos} segundos`;
+          this.tiempoRestante = tiempoRestanteSegundos;
         }
       } else {
         console.error("El token es nulo o inválido.");
