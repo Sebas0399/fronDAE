@@ -16,7 +16,7 @@ import { renovarUsuario } from "./modules/usuario/helpers/auth";
 export default {
   watch: {
     tiempoRestante(nuevo, anterior) {
-      if (nuevo < 1700) {
+      if (nuevo < 60) {
         this.$confirm.require({
           message: "Su sesión esta por terminar",
           header: "Desea renovar",

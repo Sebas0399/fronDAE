@@ -29,11 +29,11 @@ const cabecera = [
   ],
 ];
 
-export const generarExcelFachada = async (data) => {
-  await generarExcel(data);
+export const generarExcelFachada = async (data,numDae) => {
+  await generarExcel(data,numDae);
 };
 
-const generarExcel = async (data) => {
+const generarExcel = async (data,numDae) => {
   const doc = XLSX.utils.book_new();
   const hoja = XLSX.utils.aoa_to_sheet([cabecera[0], cabecera[1], ...data]);
 
@@ -43,5 +43,5 @@ const generarExcel = async (data) => {
     bookType: "biff2",
   };
 
-  XLSX.writeFile(doc, "algo.xls", opt);
+  XLSX.writeFile(doc, numDae+".xls", opt);
 };

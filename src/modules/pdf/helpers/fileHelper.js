@@ -13,7 +13,7 @@ const getRutas = async (event) => {
     const extension = file.name.split(".").pop();
 
     if (extension !== "pdf") {
-      alert("Please select a PDF file");
+      alert("Seleccione un archivo PDF");
       return;
     }
 

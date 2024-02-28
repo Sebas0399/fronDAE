@@ -2,6 +2,7 @@
   <div class="card">
     <Card>
       <template #content>
+        <h3 v-if="data!=null">{{data[0][2]}}</h3>
         <Image :src="require('@/assets/pdfLogo.png')" alt="Image" width="50" />
         <div class="flex align-items-center">
           <Dropdown
@@ -131,11 +132,13 @@ export default {
   },
   mounted() {
     this.obtenerEmpresasUsuario();
+    this.procesarData();
   },
   methods: {
     async procesarData() {
       await getDataProcesada(this.ruta).then((x) => {
         this.data = x;
+        console.log(this.data)
       });
     },
     async obtenerEmpresasUsuario() {
@@ -143,45 +146,51 @@ export default {
         this.empresas = x;
       });
     },
+     
+
+
+obtenerDatos() {
+
+
+},
     async obtenerInsumos() {
-      await getInsumos(this.selectedEmpresa).then((x) => {
-        // this.insumos = x;
-        this.insumos = x.map((empresa) => ({ ...empresa, cantidad: 1 }));
-      });
-    },
+  await getInsumos(this.selectedEmpresa).then((x) => {
+    // this.insumos = x;
+    this.insumos = x.map((empresa) => ({ ...empresa, cantidad: 1 }));
+  });
+},
     async actulizarCreditos() {
-      const res = await actualizarUsuario("1725776650001");
-    },
+  const res = await actualizarUsuario("1725776650001");
+},
     async generarExcel() {
-      await this.procesarData();
-      const datos = [];
-      const insumo = toRaw(this.selectedInsumo[0]);
-      const data = toRaw(this.data[0]);
+  const datos = [];
+  const insumo = toRaw(this.selectedInsumo[0]);
+  const data = toRaw(this.data[0]);
 
-      const tot = parseInt(data[0]) + parseInt(data[1]);
-      var contador = 1;
-      this.selectedInsumo.forEach((element) => {
-        datos.push([
-          "00000" + contador,
-          element.codigo,
-          element.subpartida,
-          element.descripcion,
-          element.tipoUnidad,
-          data[0]*element.cantidad,
-          "0",
-          data[1]*element.cantidad,
-          tot*element.cantidad,
-          element.complementario,
-          element.suplementario,
-        ]);
-        contador++;
-      });
+  const tot = parseInt(data[0]) + parseInt(data[1]);
+  var contador = 1;
+  this.selectedInsumo.forEach((element) => {
+    datos.push([
+      "00000" + contador,
+      element.codigo,
+      element.subpartida,
+      element.descripcion,
+      element.tipoUnidad,
+      data[0] * element.cantidad,
+      "0",
+      data[1] * element.cantidad,
+      tot * element.cantidad,
+      element.complementario,
+      element.suplementario,
+    ]);
+    contador++;
+  });
 
 
-      generarExcelFachada(datos);
-      this.$emit('procesar');
-      await this.actulizarCreditos();
-    },
+  generarExcelFachada(datos,data[2]);
+
+  await this.actulizarCreditos();
+},
   },
 };
 </script>
@@ -189,9 +198,11 @@ export default {
 div {
   margin-top: 15px;
 }
+
 button {
   margin-top: 10px;
 }
+
 .contenedor-item {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

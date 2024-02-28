@@ -17,9 +17,9 @@ const autenticarUsuarioAPI= async (usuario)=>{
 
 const renovarUsuarioAPI= async (token)=>{
     const url=getApiUrl('auth/refresh-token')
-    return await axios.post(url,token,{
+    return await axios.post(url,null,{
         headers:{
-            Authorization: `Bearer ${token}`
+            Authorization: token
         }
     }).then(r => r.data)
    
