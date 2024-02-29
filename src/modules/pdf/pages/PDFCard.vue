@@ -28,13 +28,15 @@
             class="w-full md:w-14rem"
           >
           </Dropdown>
+<!-- Añadir mas items -->
+<div v-for="(item, index) in itemCount" :key="index">
 
-          <MultiSelect
+  <MultiSelect
             v-if="insumos != null"
-            v-model="selectedInsumo"
+            v-model="selectedInsumo[index]"
             :options="insumos"
             optionLabel="name"
-            placeholder="Select Countries"
+            placeholder="Seleccione el insumo"
             display="chip"
             class="w-full md:w-20rem"
           >
@@ -64,10 +66,10 @@
           <MultiSelect
             v-else-if="selectedEmpresa != null"
             loading
-            v-model="selectedInsumo"
+            v-model="selectedInsumo[index]"
             :options="insumos"
             optionLabel="name"
-            placeholder="Select Countries"
+            placeholder="Seleccione el insumo"
             display="chip"
             class="w-full md:w-20rem"
           >
@@ -94,6 +96,9 @@
               </div>
             </template>
           </MultiSelect>
+</div>
+         
+          <Button @click="itemAdd">Añadir</Button>
         </div>
         <Button @click="generarExcel">Procesar</Button>
       </template>
@@ -119,8 +124,9 @@ export default {
       empresas: null,
       selectedEmpresa: null,
       insumos: null,
-      selectedInsumo: null,
+      selectedInsumo: [],
       selectedItem: null,
+      itemCount: 1
     };
   },
   watch: {
@@ -135,6 +141,14 @@ export default {
     this.procesarData();
   },
   methods: {
+    itemAdd(){
+      this.itemCount++;
+      this.selectedInsumo.push([]);
+      for (let index = 0; index < this.selectedInsumo.length; index++) {
+        console.log(this.selectedInsumo[index]);
+        
+      }
+    },
     async procesarData() {
       await getDataProcesada(this.ruta).then((x) => {
         this.data = x;
@@ -146,51 +160,55 @@ export default {
         this.empresas = x;
       });
     },
-     
 
 
-obtenerDatos() {
+
+    obtenerDatos() {
 
 
-},
+    },
     async obtenerInsumos() {
-  await getInsumos(this.selectedEmpresa).then((x) => {
-    // this.insumos = x;
-    this.insumos = x.map((empresa) => ({ ...empresa, cantidad: 1 }));
-  });
-},
+      await getInsumos(this.selectedEmpresa).then((x) => {
+        // this.insumos = x;
+        this.insumos = x.map((empresa) => ({ ...empresa, cantidad: 1 }));
+      });
+    },
     async actulizarCreditos() {
-  const res = await actualizarUsuario("1725776650001");
-},
+      const res = await actualizarUsuario("1725776650001");
+    },
     async generarExcel() {
-  const datos = [];
-  const insumo = toRaw(this.selectedInsumo[0]);
-  const data = toRaw(this.data[0]);
+      const datos = [];
+      const insumo = toRaw(this.selectedInsumo[0]);
+      const data = toRaw(this.data[0]);
 
-  const tot = parseInt(data[0]) + parseInt(data[1]);
-  var contador = 1;
-  this.selectedInsumo.forEach((element) => {
-    datos.push([
-      "00000" + contador,
-      element.codigo,
-      element.subpartida,
-      element.descripcion,
-      element.tipoUnidad,
-      data[0] * element.cantidad,
-      "0",
-      data[1] * element.cantidad,
-      tot * element.cantidad,
-      element.complementario,
-      element.suplementario,
-    ]);
-    contador++;
-  });
+      const tot = parseInt(data[0]) + parseInt(data[1]);
+      var contador = 1;
+
+      this.selectedInsumo.forEach((element) => {
+        element.forEach((dato)=>{
+          datos.push([
+          "00000" + contador,
+          dato.codigo,
+          dato.subpartida,
+          dato.descripcion,
+          dato.tipoUnidad,
+          data[0] * dato.cantidad,
+          "0",
+          data[1] * dato.cantidad,
+          tot * dato.cantidad,
+          dato.complementario,
+          dato.suplementario,
+        ]);
+        contador++;
+      });
+        })
+        
 
 
-  generarExcelFachada(datos,data[2]);
+      generarExcelFachada(datos, data[2]);
 
-  await this.actulizarCreditos();
-},
+      await this.actulizarCreditos();
+    },
   },
 };
 </script>
