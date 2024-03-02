@@ -1,4 +1,5 @@
 <template>
+  
   <div v-if="creditos <= 0">
     <Message severity="warn">Creditos nulos</Message>
   </div>
@@ -6,6 +7,29 @@
     <div v-if="creditos <= 5">
       <Message severity="info">Creditos bajos</Message>
     </div>
+    <Dropdown
+            v-if="empresas != null"
+            v-model="selectedEmpresa"
+            :options="empresas"
+            filter
+            optionValue="ruc"
+            optionLabel="nombre"
+            placeholder="Seleccione una empresa"
+            class="w-full md:w-14rem"
+          >
+          </Dropdown>
+          <Dropdown
+            v-else
+            v-model="selectedEmpresa"
+            :options="empresas"
+            filter
+            loading
+            optionValue="ruc"
+            optionLabel="nombre"
+            placeholder="Seleccione una empresa"
+            class="w-full md:w-14rem"
+          >
+          </Dropdown>
     <div>
       <div class="custom-file">
         <input
@@ -24,7 +48,7 @@
     </div>
     <div class="grid-container">
       <div v-for="(item, index) in pdfRutas" :key="index">
-        <PDFCard :ruta="item" ref="childrenRefs" @procesar="procesarChild(index)"></PDFCard>
+        <PDFCard :ruta="item" ref="childrenRefs" @procesar="procesarChild(index)" :selectedEmpresa="selectedEmpresa"></PDFCard>
       </div>
     </div>
     <div>
@@ -36,6 +60,8 @@
 // Ajusta la ruta según la ubicación real de tu archivo helper
 import { getRutasFachada } from "./helpers/fileHelper";
 import { getUsuario } from "@/modules/usuario/helpers/getUsuario";
+import { getEmpresas } from "@/modules/empresa/helpers/empresasUsuario";
+
 import PDFCard from "./pages/PDFCard.vue";
 export default {
   components: {
@@ -43,7 +69,9 @@ export default {
   },
   data() {
     return {
+      empresas:null,
       creditos: null,
+      selectedEmpresa:null,
       loading: false,
       respuesta: null,
       items: null,
@@ -53,8 +81,15 @@ export default {
   },
   mounted() {
     this.obetnerUsuario();
+    this.obtenerEmpresasUsuario();
+
   },
   methods: {
+    async obtenerEmpresasUsuario() {
+      await getEmpresas().then((x) => {
+        this.empresas = x;
+      });
+    },
     async cargarPdf(event) {
     this.pdfRutas = await getRutasFachada(event);
     // Espera a que se carguen todas las referencias de los componentes hijos

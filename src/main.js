@@ -39,6 +39,8 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import ConfirmationService from 'primevue/confirmationservice';
 import Message from 'primevue/message';
 import InputNumber from 'primevue/inputnumber';
+import Checkbox from 'primevue/checkbox';
+
 const app = createApp(App);
 app.use(PrimeVue);
 app.use(ToastService);
@@ -72,6 +74,7 @@ app.component("Toast",Toast)
 app.component("ConfirmPopup",ConfirmPopup)
 app.component("Message",Message)
 app.component("Password",Password)
+app.component("Checkbox",Checkbox)
 
 app.use(store)
 app.use(router)

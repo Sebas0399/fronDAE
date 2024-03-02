@@ -5,7 +5,6 @@ import cedulaService  from "../../utils/tokenUtils";
 //Fachada
 export const getUsuario = async () => {
   const usuarioCedula = cedulaService.getCedula();
-  console.log(usuarioCedula)
   return await getUsuarioApi(usuarioCedula);
 };
 

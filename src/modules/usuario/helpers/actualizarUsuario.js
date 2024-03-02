@@ -1,9 +1,11 @@
 import axios from "axios";
 import { getApiUrl  } from "../../utils/apiUtil";
+import cedulaService  from "../../utils/tokenUtils";
 
 
 //Fachada
-export const actualizarUsuario= async(usuarioCedula)=>{
+export const actualizarUsuario= async()=>{
+    const usuarioCedula=cedulaService.getCedula();
     return await actualizarUsuarioApi(usuarioCedula)
 }
 

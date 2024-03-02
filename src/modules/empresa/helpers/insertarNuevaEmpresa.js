@@ -6,7 +6,6 @@ import cedulaService from '../../utils/tokenUtils';
 //Fachada
 export const insertEmpresa = async (data) => {
   data.usuario.cedula = cedulaService.getCedula();
-
   return await insertEmpresaApi(data);
 };
 

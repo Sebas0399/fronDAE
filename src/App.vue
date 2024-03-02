@@ -35,6 +35,7 @@ export default {
             renovarUsuario(cedulaService.getToken()).then((x)=>{
               localStorage.setItem("token", x.jwt);
               localStorage.setItem("isLoggedIn", true);
+              this.iniciarTemporizador()
             })
           },
           reject: () => {
@@ -63,6 +64,14 @@ export default {
           icon: "pi pi-home",
           command: () => {
             this.$router.push("/dashboard");
+          },
+        },
+        {
+          label: "Pagos",
+          index: 6,
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push("/pago");
           },
         },
         {

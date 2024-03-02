@@ -1,11 +1,11 @@
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
-import store from '../store';
 import Dashboard from '@/modules/dashboard/pages/Dashboard.vue'
 import PDF from '../modules/pdf/PDF.vue'
 import Empresa from '@/modules/empresa/pages/Empresa.vue'
 import Usuario from '@/modules/usuario/pages/Usuario.vue'
 import Login from '@/modules/usuario/pages/Login.vue'
 import Registro from '@/modules/usuario/pages/Registro.vue'
+import Pago from '@/modules/pagos/pages/Pago.vue'
 
 const routes = [
   {
@@ -38,6 +38,15 @@ const routes = [
     path: '/pdf',
     name: 'pdf',
     component: PDF,
+    meta: {
+      rutaProtegida: true,
+      
+    },
+  },
+  {
+    path: '/pago',
+    name: 'pago',
+    component: Pago,
     meta: {
       rutaProtegida: true,
       
