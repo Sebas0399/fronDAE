@@ -3,9 +3,8 @@
         <h2>Resumen de compra</h2>
         <div class="carrito-grid">
             <h3>{{planes[$route.params.plan-1].precio}}</h3>
-
         </div>
-        <Button class="text-center" label="Proceder con el pago{}"> </Button>
+        <Button class="text-center" label="Proceder con el pago"> </Button>
     </div>
 </template>
 
