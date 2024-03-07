@@ -3,6 +3,7 @@
         {{usuario}}
     </div>
 </template>
+
 <script>
 import { getUsuario } from "@/modules/usuario/helpers/getUsuario";
 export default {
@@ -10,19 +11,20 @@ export default {
         this.obtenerUsuario()
     },
     methods: {
-        async obtenerUsuario(){
-            await getUsuario("1725776650001").then((x)=>{
-            this.usuario=x;
+        async obtenerUsuario() {
+            await getUsuario().then((x) => {
+                this.usuario = x;
             })
         }
     },
     data() {
         return {
-            usuario:null
+            usuario: null
         }
     },
 }
 </script>
+
 <style lang="">
-    
+
 </style>

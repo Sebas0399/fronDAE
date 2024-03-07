@@ -1,0 +1,11 @@
+[
+    {
+        "id": 1,
+        "nombre": "Básico",
+        "precio": 10,
+        "detalles": [
+            "50 Anexos Compensatorios",
+            " $ 0.20 por documento"
+        ]
+    }
+]

@@ -1,6 +1,5 @@
 <template lang="">
   <div class="card flex justify-content-center">
-    <Menu :model="items" />
     <Toast />
     <ConfirmPopup group="empresa"></ConfirmPopup>
 
@@ -11,7 +10,10 @@
       :style="{ width: '50rem' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
     >
-      <EmpresaInsertar @empresaInsertada="insertarNuevaEmpresa"></EmpresaInsertar>
+      <EmpresaInsertar
+      
+        @empresaInsertada="insertarNuevaEmpresa"
+      ></EmpresaInsertar>
     </Dialog>
 
     <Dialog
@@ -21,7 +23,10 @@
       :style="{ width: '50rem' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
     >
-      <EmpresaActualizar @empresaInsertada="insertarNuevaEmpresa" :empresa="empresa"></EmpresaActualizar>
+      <EmpresaActualizar
+        @empresaActualizar="actualizarEmpresa"
+        :empresa="empresa"
+      ></EmpresaActualizar>
     </Dialog>
   </div>
   <div>
@@ -34,11 +39,18 @@
       v-if="cargaCompleta"
     >
       <template #header>
-        <div class="flex justify-content-end">
-          <span class="p-input-icon-left">
-            <i class="pi pi-search" />
-            <InputText v-model="filters['ruc'].value" placeholder="Buscar" />
-          </span>
+        <div
+          class="flex flex-wrap align-items-center justify-content-between gap-2"
+        >
+          <InputText v-model="filters['ruc'].value" placeholder="Buscar" />
+
+          <Button
+            icon="pi pi-plus"
+            @click="this.visible = true"
+            
+            rounded
+            raised
+          />
         </div>
       </template>
 
@@ -140,12 +152,14 @@ import { deleteEmpresa } from "../helpers/eliminarEmpresa";
 
 import InsumosTodos from "@/modules/insumos/pages/InsumosTodos.vue";
 import { FilterMatchMode } from "primevue/api";
-import EmpresaInsertar from "./EmpresaInsertar.vue"
-import EmpresaActualizar from "./EmpresaActualizar.vue"
+import EmpresaInsertar from "./EmpresaInsertar.vue";
+import EmpresaActualizar from "./EmpresaActualizar.vue";
 
 export default {
   components: {
-    InsumosTodos, EmpresaInsertar, EmpresaActualizar
+    InsumosTodos,
+    EmpresaInsertar,
+    EmpresaActualizar,
   },
   data() {
     return {
@@ -181,6 +195,11 @@ export default {
       this.obtenerEmpresas();
       this.visible = false;
     },
+
+    actualizarEmpresa() {
+      this.obtenerEmpresas();
+      this.visibleActualizar = false;
+    },
     async obtenerEmpresas() {
       this.cargaCompleta = false;
       getEmpresas()
@@ -195,11 +214,11 @@ export default {
     abrirActualizar(data) {
       this.visibleActualizar = true;
       this.empresa = {
+        id:data.id,
         nombre: data.nombre,
         ruc: data.ruc,
         direccion: data.direccion,
       };
-
     },
 
     async eliminarEmpresa(event, val) {
@@ -235,8 +254,6 @@ export default {
       this.visibleInsumos = true;
       this.rucInsumo = val.data.ruc;
     },
-
-
   },
 };
 </script>

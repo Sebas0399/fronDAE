@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import ProgressSpinner from 'primevue/progressspinner';
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -11,6 +12,7 @@ import Row from 'primevue/row';
 
 import Menu from 'primevue/menu';
 import ToastService from 'primevue/toastservice';
+import "primeflex/primeflex.css";
 
 import 'primeicons/primeicons.css'
 
@@ -42,7 +44,7 @@ import InputNumber from 'primevue/inputnumber';
 import Checkbox from 'primevue/checkbox';
 
 const app = createApp(App);
-app.use(PrimeVue);
+app.use(PrimeVue,{ripple:true});
 app.use(ToastService);
 app.use(ConfirmationService);
 
@@ -75,6 +77,8 @@ app.component("ConfirmPopup",ConfirmPopup)
 app.component("Message",Message)
 app.component("Password",Password)
 app.component("Checkbox",Checkbox)
+app.component("ProgressSpinner",ProgressSpinner)
+
 
 app.use(store)
 app.use(router)

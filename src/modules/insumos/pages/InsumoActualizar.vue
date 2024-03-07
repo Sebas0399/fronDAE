@@ -1,6 +1,4 @@
 <template lang="">
-      <Toast />
-
     <div>
         <div class="p-fluid">
       <span class="p-float-label">
@@ -39,87 +37,68 @@
         <label for="descripcion">Descripcion</label>
       </span>
     </div>
-    <div class="p-fluid">
+    <div class="p-fluid ">
       <span class="p-float-label">
-        <Checkbox v-model="insumo.calculaMerma" :binary="true" inputId="merma" value="Merma" />
+        <Checkbox v-model="calculaMerma" :binary="true" inputId="merma" value="Merma" />
         <label for="merma" class="ml-2"> Merma </label>
       </span>
     </div>
-
     <div class="p-fluid">
-      <span class="p-float-label">
-        <Button
-          label="Guardar"
-          icon="pi pi-external-link"
-          @click="guardarInsumo"
-        />
-      </span>
-    
-  </div>
+        <span class="p-float-label">
+         
+          <Button
+            label="Actualizar"
+            icon="pi pi-external-link"
+            @click="actualizarInsumo"
+          />
+        </span>
+      </div>
     </div>
 </template>
 
 <script>
-import { insertInsumo } from "../helpers/insertarInsumo";
+import { updateInsumo } from "../helpers/actualizarInsumo";
 
 export default {
-  data() {
-    return {
-      insumo: {
-        codigo: null,
-        subpartida: null,
-        complementario: null,
-        suplementario: null,
-        descripcion: null,
-        tipoUnidad: null,
-        calculaMerma: null,
-        empresa: {
-          ruc: this.ruc,
-        },
-      },
-
-    }
-  }
-  ,
-  methods: {
-    async guardarInsumo() {
-      await insertInsumo(this.insumo).then((z) => {
-        if (z != null) {
-          this.$toast.add({
-            severity: "success",
-            summary: "Success Message",
-            detail: "Insumo Insertado",
-            life: 3000,
-          });
-          this.$emit("insertado");
-          this.clearForm();
-
+    data() {
+        return {
+            calculaMerma:this.insumo.calculaMerma
         }
-      });
     },
-    clearForm() {
-      this.insumo = {
-        codigo: null,
-        subpartida: null,
-        complementario: null,
-        suplementario: null,
-        descripcion: null,
-        tipoUnidad: null,
-        calculaMerma: null,
-        empresa: {
-          ruc: this.ruc,
+    mounted() {
+    },
+    methods: {
+        async actualizarInsumo() {
+            this.insumo.calculaMerma=this.calculaMerma
+            await updateInsumo(this.insumo).then((data) => {
+                this.$toast.add({
+                    severity: "success",
+                    summary: "Success Message",
+                    detail: "Insumo Actualizado",
+                    life: 3000,
+                });
+                this.$emit("insumoActualizar")
+            }).catch((error) => {
+                this.$toast.add({
+                    severity: "error",
+                    summary: "No se actualizo correctamente",
+                    detail: error,
+                    life: 3000,
+                });
+            });
         },
-      };
+    },
+    props: {
+        insumo: {
+            type: Object,
+            required: true,
+        }
     }
-  },
-  props: {
-    ruc: String,
-  },
 }
 </script>
 
 <style scoped>
 span {
-  margin-top: 25px;
+    margin-top: 25px;
 }
-</style>../helpers/insertarInsumo
+</style>

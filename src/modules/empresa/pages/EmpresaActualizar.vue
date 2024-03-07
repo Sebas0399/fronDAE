@@ -49,12 +49,11 @@ export default {
           detail: "Empresa Actualizada",
           life: 3000,
         });
-        this.actualizar = false;
-        this.visible = false;
+        this.$emit("empresaActualizar")
       }).catch((error) => {
         this.$toast.add({
           severity: "error",
-          summary: "Error Message",
+          summary: "No se actualizo correctamente",
           detail: error,
           life: 3000,
         });

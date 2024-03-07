@@ -1,12 +1,16 @@
 <template>
   <NavBar v-if="token != null" :items="itemsA" :usuario="true"></NavBar>
   <NavBar v-else :items="itemsLogin"></NavBar>
+  <Toast group="session"></Toast>
+
   <router-view></router-view>
   <ConfirmDialog></ConfirmDialog>
   <div>
     <p>Token expirará en: {{ tiempoRestante }}</p>
   </div>
+
 </template>
+
 <script>
 import NavBar from "@/components/NavBar.vue";
 import * as jose from "jose";
@@ -16,7 +20,7 @@ import { renovarUsuario } from "./modules/usuario/helpers/auth";
 export default {
   watch: {
     tiempoRestante(nuevo, anterior) {
-      if (nuevo < 60) {
+      if (nuevo < 120) {
         this.$confirm.require({
           message: "Su sesión esta por terminar",
           header: "Desea renovar",
@@ -26,16 +30,19 @@ export default {
           acceptLabel: "Si",
           accept: () => {
             this.$toast.add({
+              group:"session",
               severity: "info",
               summary: "Confirmed",
-              detail: "You have accepted",
+              detail: "Sesión Renovada",
               life: 3000,
             });
             //renovar token
-            renovarUsuario(cedulaService.getToken()).then((x)=>{
+            renovarUsuario(cedulaService.getToken()).then((x) => {
               localStorage.setItem("token", x.jwt);
               localStorage.setItem("isLoggedIn", true);
-              this.iniciarTemporizador()
+              this.token = jose.decodeJwt(x.jwt, { complete: true }); // Update token
+              this.actualizarTiempoRestante(); // Update timer after successful renewal
+              this.iniciarTemporizador();
             })
           },
           reject: () => {
@@ -66,14 +73,7 @@ export default {
             this.$router.push("/dashboard");
           },
         },
-        {
-          label: "Pagos",
-          index: 6,
-          icon: "pi pi-home",
-          command: () => {
-            this.$router.push("/pago");
-          },
-        },
+
         {
           label: "Empresas",
           icon: "pi pi-chart-line",
@@ -91,14 +91,7 @@ export default {
           },
         },
 
-        {
-          label: "Usuario",
-          icon: "pi pi-list",
-          index: 5,
-          command: () => {
-            this.$router.push("/usuario");
-          },
-        },
+
       ],
       itemsLogin: [
         {
@@ -115,6 +108,14 @@ export default {
           icon: "pi pi-home",
           command: () => {
             this.$router.push("/registro");
+          },
+        },
+        {
+          label: "Home",
+          index: 1,
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push("/");
           },
         },
       ],
@@ -173,6 +174,7 @@ export default {
   },
 };
 </script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

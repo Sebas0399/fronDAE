@@ -133,7 +133,6 @@ export default {
 
     },
     async obtenerInsumos() {
-      console.log(this.selectedEmpresa)
       await getInsumos(this.selectedEmpresa).then((x) => {
         // this.insumos = x;
         this.insumos = x.map((empresa) => ({ ...empresa, cantidad: 1 }));

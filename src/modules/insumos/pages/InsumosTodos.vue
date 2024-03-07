@@ -2,12 +2,18 @@
 
   <Menu :model="items" />
   <Toast />
+  <ConfirmPopup group="insumo"></ConfirmPopup>
+
   <Dialog v-model:visible="visible" modal header="Nueva" :style="{ width: '50rem' }"
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <InsumoInsertar @insertado="insertado" :ruc="ruc"></InsumoInsertar>
-
-
   </Dialog>
+
+  <Dialog v-model:visible="visibleActualizar" modal header="Actualizar" :style="{ width: '50rem' }"
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+    <InsumoActualizar @insumoActualizar="actualizarInsumo" :insumo="insumo"></InsumoActualizar>
+  </Dialog>
+
   <DataTable :value="insumos" tableStyle="min-width: 50rem" v-if="cargaCompleta">
     <Column field="codigo" header="Codigo"></Column>
     <Column field="subpartida" header="Subpartida"></Column>
@@ -20,14 +26,17 @@
 
     <Column header="Merma">
       <template #body="slotProps">
-        <Checkbox :modelValue="slotProps.data.calculaMerma" readonly="true" :binary="true"/>
+        <Checkbox :modelValue="slotProps.data.calculaMerma" readonly="true" :binary="true" />
       </template>
     </Column>
 
     <Column header="Accion">
 
-      <template #body="{ value }">
-        <Button label="Botón" icon="pi pi-check" @click="handleButtonClick(rowData)"></Button>
+      <template #body="slotProps">
+        <span class="p-buttonset">
+          <Button label="Actualizar" icon="pi pi-refresh" @click="abrirActualizar(slotProps.data)" />
+          <Button label="Eliminar" icon="pi pi-times" @click="eliminarInsumo($event, slotProps.data.id)" />
+        </span>
       </template>
     </Column>
   </DataTable>
@@ -86,18 +95,22 @@
 
 <script>
 import { getInsumos } from "../helpers/insumosEmpresa";
+import { deleteInsumo } from "../helpers/eliminarInsumo";
+
 import InsumoInsertar from "./InsumoInsertar.vue";
+import InsumoActualizar from "./InsumoActualizar.vue";
 export default {
   components: {
-    InsumoInsertar,
+    InsumoInsertar, InsumoActualizar
   },
   data() {
     return {
-      test:true,
+      test: true,
       insumosPosible: new Array(4),
       cargaCompleta: false,
       insumos: null,
       visible: false,
+      visibleActualizar: false,
       items: [
         {
           label: "Añadir",
@@ -113,6 +126,22 @@ export default {
     this.cargarInsumos();
   },
   methods: {
+
+    abrirActualizar(data) {
+      this.visibleActualizar = true;
+      this.insumo = {
+        id: data.id,
+        codigo: data.codigo,
+        subpartida: data.subpartida,
+        complementario: data.complementario,
+        suplementario: data.suplementario,
+        tipoUnidad: data.tipoUnidad,
+        descripcion: data.descripcion,
+        calculaMerma: data.calculaMerma,
+
+
+      };
+    },
     insertado() {
       this.cargarInsumos();
       this.visible = false;
@@ -126,12 +155,44 @@ export default {
         console.log(z);
       });
     },
+    async eliminarInsumo(event, val) {
+      this.$confirm.require({
+        group: "insumo",
+        target: event.currentTarget,
+        message: "Se va a eliminar el insumo",
+        icon: "pi pi-exclamation-triangle",
+        accept: async () => {
+          const res = await deleteInsumo(val);
+          if (res != null) {
+            this.$toast.add({
+              severity: "success",
+              summary: "Success",
+              detail: "Insumo Eliminado",
+              life: 3000,
+            });
+            this.cargarInsumos();
+          }
+        },
+        reject: () => {
+          this.$toast.add({
+            severity: "error",
+            summary: "Cancelado",
+            detail: "Eliminacion Cancelada",
+            life: 3000,
+          });
+        },
+      });
+    },
+    actualizarInsumo () {
+      this.cargarInsumos();
+      this.visibleActualizar = false;
+    },
 
   },
+
   props: {
     ruc: String,
   },
-  components: { InsumoInsertar }
 };
 </script>
 
