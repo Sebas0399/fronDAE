@@ -29,20 +29,22 @@ export default {
           rejectLabel: "No",
           acceptLabel: "Si",
           accept: () => {
-            this.$toast.add({
+            
+            //renovar token
+            renovarUsuario(cedulaService.getToken()).then((x) => {
+              
+              localStorage.setItem("token", x.jwt);
+              localStorage.setItem("isLoggedIn", true);
+              this.token = jose.decodeJwt(x.jwt, { complete: true }); 
+              this.actualizarTiempoRestante(); // Update timer after successful renewal
+              this.iniciarTemporizador();
+              this.$toast.add({
               group:"session",
               severity: "info",
               summary: "Confirmed",
               detail: "Sesión Renovada",
               life: 3000,
             });
-            //renovar token
-            renovarUsuario(cedulaService.getToken()).then((x) => {
-              localStorage.setItem("token", x.jwt);
-              localStorage.setItem("isLoggedIn", true);
-              this.token = jose.decodeJwt(x.jwt, { complete: true }); // Update token
-              this.actualizarTiempoRestante(); // Update timer after successful renewal
-              this.iniciarTemporizador();
             })
           },
           reject: () => {

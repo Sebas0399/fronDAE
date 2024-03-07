@@ -94,13 +94,7 @@ export default {
       active: parseInt(localStorage.getItem("activeTab")) || 0,
 
       itemsUsuario: [
-        {
-          label: "Configuraciones",
-          icon: "pi pi-cog",
-          command: () => {
-            this.$router.push("/usuario");
-          },
-        },
+       
         {
           label: "Salir",
           icon: "pi pi-sign-out",

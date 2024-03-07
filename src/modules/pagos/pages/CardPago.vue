@@ -4,7 +4,7 @@
             <div class="p-3 h-full">
                 <div class="shadow-2 p-3 h-full flex flex-column surface-card" style="border-radius: 6px">
                     <div class="text-900 font-medium text-xl mb-2">{{plan.nombre}}</div>
-                    <div class="text-600">Plan description</div>
+                    <div class="text-600">Descripción del plan</div>
                     <hr class="my-3 mx-0 border-top-1 border-none surface-border" />
                     <div class="flex align-items-center">
                         <span class="font-bold text-2xl text-900">${{plan.precio}}</span>

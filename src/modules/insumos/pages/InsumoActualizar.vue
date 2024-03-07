@@ -71,6 +71,7 @@ export default {
         async actualizarInsumo() {
             this.insumo.calculaMerma=this.calculaMerma
             await updateInsumo(this.insumo).then((data) => {
+              console.log(data)
                 this.$toast.add({
                     severity: "success",
                     summary: "Success Message",
@@ -79,6 +80,7 @@ export default {
                 });
                 this.$emit("insumoActualizar")
             }).catch((error) => {
+              console.log(error)
                 this.$toast.add({
                     severity: "error",
                     summary: "No se actualizo correctamente",
