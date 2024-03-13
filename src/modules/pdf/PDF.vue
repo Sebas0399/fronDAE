@@ -19,7 +19,7 @@
     </Dropdown>
     <div>
       <div class="custom-file" v-if="selectedEmpresa != null">
-        <input type="file" class="custom-file-input" id="customFile" @change="cargarPdf" multiple="true"
+        <input type="file" class="custom-file-input" id="customFile" @change="cargarPdf"  multiple="true"
           accept="application/pdf" />
         <label class="custom-file-label" for="customFile">Seleccionar Archivo</label>
       </div>
@@ -67,12 +67,10 @@ export default {
 
   },
   watch: {
-    pdfRutas(nuevo,old){
-      console.log(nuevo)
-    },
+    
     selectedEmpresa(nuevo,old){
-      console.log(nuevo)
       this.pdfRutas=[]
+      
 
     }
   },
@@ -85,7 +83,6 @@ export default {
       });
     },
     async cargarPdf(event) {
-     console.log(event)
       this.pdfRutas = await getRutasFachada(event);
       // Espera a que se carguen todas las referencias de los componentes hijos
       this.$nextTick(() => {

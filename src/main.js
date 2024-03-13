@@ -42,6 +42,13 @@ import ConfirmationService from 'primevue/confirmationservice';
 import Message from 'primevue/message';
 import InputNumber from 'primevue/inputnumber';
 import Checkbox from 'primevue/checkbox';
+import ScrollPanel from 'primevue/scrollpanel';
+import Carousel from 'primevue/carousel';
+import Tag from 'primevue/tag';
+
+// import as directive
+import BadgeDirective from 'primevue/badgedirective';
+
 
 const app = createApp(App);
 app.use(PrimeVue,{ripple:true});
@@ -79,6 +86,11 @@ app.component("Password",Password)
 app.component("Checkbox",Checkbox)
 app.component("ProgressSpinner",ProgressSpinner)
 
+app.component("ScrollPanel",ScrollPanel)
+app.component("Carousel",Carousel)
+app.component("Tag",Tag)
+
+app.directive('badge', BadgeDirective);
 
 app.use(store)
 app.use(router)

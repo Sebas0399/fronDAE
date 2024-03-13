@@ -5,10 +5,6 @@
 
   <router-view></router-view>
   <ConfirmDialog></ConfirmDialog>
-  <div>
-    <p>Token expirará en: {{ tiempoRestante }}</p>
-  </div>
-
 </template>
 
 <script>
@@ -32,7 +28,7 @@ export default {
             
             //renovar token
             renovarUsuario(cedulaService.getToken()).then((x) => {
-              
+
               localStorage.setItem("token", x.jwt);
               localStorage.setItem("isLoggedIn", true);
               this.token = jose.decodeJwt(x.jwt, { complete: true }); 
@@ -113,7 +109,7 @@ export default {
           },
         },
         {
-          label: "Home",
+          label: "Inicio",
           index: 1,
           icon: "pi pi-home",
           command: () => {

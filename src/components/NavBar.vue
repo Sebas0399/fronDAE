@@ -47,7 +47,6 @@
 </template>
 
 <script>
-import store from "@/store";
 import * as jose from "jose";
 export default {
   computed: {
