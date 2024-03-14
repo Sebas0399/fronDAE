@@ -11,22 +11,29 @@
       <Message severity="info">Creditos bajos</Message>
     </div>
     <Dropdown v-if="empresas != null" v-model="selectedEmpresa" :options="empresas" filter optionValue="ruc"
-      optionLabel="nombre" placeholder="Seleccione una empresa" class="w-full md:w-14rem" >
+      optionLabel="nombre" placeholder="Seleccione una empresa" class="w-full md:w-14rem mt-2">
     </Dropdown>
-    <Dropdown v-else v-model="selectedEmpresa" :options="empresas" filter loading
-      optionValue="ruc" optionLabel="nombre" placeholder="Seleccione una empresa" class="w-full md:w-14rem" >
-      
+    <Dropdown v-else v-model="selectedEmpresa" :options="empresas" filter loading optionValue="ruc" optionLabel="nombre"
+      placeholder="Seleccione una empresa" class="w-full md:w-14rem">
+
     </Dropdown>
     <div>
-      <div class="custom-file" v-if="selectedEmpresa != null">
-        <input type="file" class="custom-file-input" id="customFile" @change="cargarPdf"  multiple="true"
-          accept="application/pdf" />
-        <label class="custom-file-label" for="customFile">Seleccionar Archivo</label>
+      <div class="custom-file" v-if="(selectedEmpresa != null)">
+        <div v-if="insumos === null">
+          <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="var(--surface-ground)"
+            animationDuration=".9s" aria-label="Custom ProgressSpinner" />
+        </div>
+        <div v-else>
+          <input type="file" class="custom-file-input" id="customFile" @change="cargarPdf" multiple="true"
+            accept="application/pdf" />
+          <label class="custom-file-label" for="customFile">Subir DAE</label>
+        </div>
       </div>
     </div>
     <div class="grid-container">
       <div v-for="(item, index) in pdfRutas" :key="index">
-        <PDFCard :ruta="item" ref="childrenRefs" @procesar="procesarChild(index)" :selectedEmpresa="selectedEmpresa">
+        <PDFCard :ruta="item" :insumos="insumos" ref="childrenRefs" @procesar="procesarChild(index)"
+          :selectedEmpresa="selectedEmpresa">
         </PDFCard>
       </div>
     </div>
@@ -41,6 +48,7 @@
 import { getRutasFachada } from "./helpers/fileHelper";
 import { getUsuario } from "@/modules/usuario/helpers/getUsuario";
 import { getEmpresas } from "@/modules/empresa/helpers/empresasUsuario";
+import { getInsumos } from "@/modules/insumos/helpers/insumosEmpresa";
 
 import PDFCard from "./pages/PDFCard.vue";
 export default {
@@ -51,12 +59,13 @@ export default {
   data() {
     return {
       empresas: null,
+      insumos: null,
       creditos: null,
       selectedEmpresa: null,
       loading: false,
       items: null,
       pdfRutas: [],
-      children: [] ,
+      children: [],
       lastFileId: null,
 
     };
@@ -67,22 +76,34 @@ export default {
 
   },
   watch: {
-    
-    selectedEmpresa(nuevo,old){
-      this.pdfRutas=[]
-      
+
+    selectedEmpresa(nuevo, old) {
+      this.pdfRutas = []
+      if (nuevo != null) {
+        getInsumos(this.selectedEmpresa).then((x) => {
+          this.insumos = x.map((empresa) => ({ ...empresa, cantidad: 1 }));
+        });
+      }
 
     }
   },
   methods: {
-   
+
 
     async obtenerEmpresasUsuario() {
       await getEmpresas().then((x) => {
         this.empresas = x;
       });
     },
+    async obtenerInsumos() {
+      await getInsumos(this.selectedEmpresa).then((x) => {
+        // this.insumos = x;
+        this.insumos = x.map((empresa) => ({ ...empresa, cantidad: 1 }));
+        console.log(this.insumos)
+      });
+    },
     async cargarPdf(event) {
+
       this.pdfRutas = await getRutasFachada(event);
       // Espera a que se carguen todas las referencias de los componentes hijos
       this.$nextTick(() => {
@@ -132,7 +153,7 @@ export default {
 
 .custom-file-label {
   padding: 10px;
-  background-color: #3498db;
+  background-color: #3c54cc;
   color: #fff;
   border-radius: 5px;
   cursor: pointer;

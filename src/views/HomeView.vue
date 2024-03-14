@@ -29,21 +29,20 @@
                         </template>
                     </Carousel>
                 </div>
-                <div class="col">
-
-
-                    <h3>Te explicamos paso a paso cómo empezar a usar Facturero Móvil</h3>
+                <div class="col text-lg	" >
+                    <h3>Te explicamos paso a paso cómo empezar a usar Anexos Aduana</h3>
                     <h3>Paso 1: Regístrate</h3>
                     <p class="text-left	"> Ingresa tu información como, Nombres, Cedula y
                         correo
-                        <router-link to="/registro" target="_blank" rel="noopener">
+                        <router-link to="/registro" class="enlace-parrafo">
                             AQUI
                         </router-link>
                         <br>
 
                     </p>
                     <h3>Paso 2: Haz tu primera recarga</h3>
-                    <p class="text-left	">Elige el paquete que más se adapte a tus necesidades, disponemos paquetes desde $10 para uso
+                    <p class="text-left	">Elige el paquete que más se adapte a tus necesidades, disponemos paquetes
+                        desde $10 para uso
                         personal
                         y
                         paquetes especiales para emprendedores o negocios.</p>
@@ -58,7 +57,7 @@
     </div>
     <div class="beneficios"></div>
     <div class="footer">
-        <p>Copyright © 2024. <a href="http://www.virtualcreate.net" target="_blank">Virtual Create Cia. Ltda.</a> Todos
+        <p>Copyright © 2024. <a href="https://www.suplitesa.com/" target="_blank">Suplitesa</a> Todos
             los
             derechos reservados.</p>
     </div>
@@ -76,30 +75,22 @@ export default {
 
     data() {
         return {
-            products: [
-                {
-                    id: '1000',
-                    code: 'f230fh0g3',
-                    name: 'Bamboo Watch',
-                    description: 'Product Description',
-                    image: 'bamboo-watch.jpg',
-                    price: 65,
-                    category: 'Accessories',
-                    quantity: 24,
-                    inventoryStatus: 'INSTOCK',
-                    rating: 5
-                },
-            ],
+          
             instrucciones: [
                 {
                     id: '1',
-                    description: 'Product Description',
+                    description: 'Regístrate',
                     image: require('@/assets/instrucciones/1.jpg'),
                 },
                 {
                     id: '2',
-                    description: 'Product Description',
+                    description: 'Haz tu primera recarga',
                     image: require('@/assets/instrucciones/2.jpg'),
+                },
+                {
+                    id: '3',
+                    description: 'Sube la información necesaria',
+                    image: require('@/assets/instrucciones/3.jpg'),
                 },
             ]
         }
@@ -151,10 +142,20 @@ p {
 }
 
 .footer {
-    background-color: #3F51B5;
+    background-color: #3c54cc;
     margin-top: auto;
     color: black;
     padding: 5px;
     border-radius: 10px;
+}
+
+.enlace-parrafo {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #000;
 }
 </style>

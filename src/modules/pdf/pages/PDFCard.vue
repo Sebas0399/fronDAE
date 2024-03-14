@@ -84,7 +84,6 @@
 
 <script>
 import { getDataProcesada } from "../helpers/pdfUtil";
-import { getInsumos } from "@/modules/insumos/helpers/insumosEmpresa";
 import { generarExcelFachada } from "../helpers/excelUtil";
 import { actualizarUsuario } from "../../usuario/helpers/actualizarUsuario";
 
@@ -93,13 +92,12 @@ import { toRaw } from "vue";
 export default {
   props: {
     ruta: String,
-    selectedEmpresa: String,
+    //selectedEmpresa: String,
+    insumos:Object
   },
   data() {
     return {
       data: null,
-      empresas: null,
-      insumos: null,
       selectedInsumo: [],
       selectedItem: null,
       itemCount: 1,
@@ -108,7 +106,7 @@ export default {
 
   mounted() {
     this.procesarData();
-    this.obtenerInsumos();
+    console.log(this.insumos)
   },
   methods: {
     itemAdd() {
@@ -125,13 +123,8 @@ export default {
       });
     },
 
-    obtenerDatos() {},
-    async obtenerInsumos() {
-      await getInsumos(this.selectedEmpresa).then((x) => {
-        // this.insumos = x;
-        this.insumos = x.map((empresa) => ({ ...empresa, cantidad: 1 }));
-      });
-    },
+    
+    
     async actulizarCreditos() {
       const res = await actualizarUsuario();
     },
