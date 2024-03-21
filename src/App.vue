@@ -201,7 +201,7 @@ export default {
 
 body {
   position: relative;
-  border: 6px solid red;
+  
   min-height: 100vh;
   padding-bottom: 80px;
 }

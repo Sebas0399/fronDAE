@@ -85,7 +85,7 @@
 <script>
 import { getDataProcesada } from "../helpers/pdfUtil";
 import { generarExcelFachada } from "../helpers/excelUtil";
-import { actualizarUsuario } from "../../usuario/helpers/actualizarUsuario";
+import { actualizarUsuario,actualizarUsuarioBultos } from "../../usuario/helpers/actualizarUsuario";
 
 import { toRaw } from "vue";
 
@@ -125,8 +125,8 @@ export default {
 
     
     
-    async actulizarCreditos() {
-      const res = await actualizarUsuario();
+    async actulizarCreditos(totalBultos) {
+      const res = await actualizarUsuarioBultos(totalBultos);
     },
     async generarExcel() {
       const datos = [];
@@ -134,9 +134,9 @@ export default {
 
       const tot = parseInt(data[0]) + parseInt(data[1]);
       var contador = 1;
-
+      var totalBultos=0;
       this.selectedInsumo.forEach((element) => {
-        console.log(element)
+        totalBultos+=totalBultos+parseInt(data[0])
         element.forEach((dato) => {
           datos.push([
             "00000" + contador,
@@ -157,7 +157,7 @@ export default {
 
       generarExcelFachada(datos, data[2]);
 
-      await this.actulizarCreditos();
+      await this.actulizarCreditos(totalBultos);
     },
   },
 };

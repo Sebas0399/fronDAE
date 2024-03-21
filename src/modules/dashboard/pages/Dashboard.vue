@@ -101,6 +101,7 @@ export default {
     async obtenerUsuario() {
       await getUsuario().then((usu) => {
         this.usuario = usu;
+        console.log(usu)
       });
     },
   },
