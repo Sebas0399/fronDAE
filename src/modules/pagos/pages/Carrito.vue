@@ -68,7 +68,7 @@ export default {
                             amountWithoutTax: 100,
                             currency: "USD",
                             clientTransactionId: "identificador-único",
-                            lang: "es"
+                            lang: "en"
 
                         }).then(function (paramlog) {
                             console.log("bien")
