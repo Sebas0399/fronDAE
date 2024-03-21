@@ -13,7 +13,6 @@
 
         </div>
         <div id="pp-button-container"></div>
-        <Button class="text-center" label="Proceder con el pago" @click="pagar()"> </Button>
     </div>
 </template>
 
@@ -62,15 +61,7 @@ export default {
                     btnHorizontal: true,
                     btnCard: true,
                     createOrder: async function (actions) {
-                        return actions.prepare({
-
-                            amount: 100,
-                            amountWithoutTax: 100,
-                            currency: "USD",
-                            clientTransactionId: "identificador-único",
-                            lang: "en"
-
-                        }).then(function (paramlog) {
+                        return actions.prepare(this.precio).then(function (paramlog) {
                             console.log("bien")
                             console.log(paramlog);
                             return paramlog;
