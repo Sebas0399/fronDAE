@@ -1,19 +1,31 @@
 <template>
-  <NavBar v-if="token != null" :items="itemsA" :usuario="true"></NavBar>
+  <NavBar v-if="isLoggedIn" :items="itemsA"></NavBar>
   <NavBar v-else :items="itemsLogin"></NavBar>
   <Toast group="session"></Toast>
 
   <router-view></router-view>
   <ConfirmDialog></ConfirmDialog>
+  <Footer></Footer>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
+
 import * as jose from "jose";
 import cedulaService from "./modules/utils/tokenUtils";
 import { renovarUsuario } from "./modules/usuario/helpers/auth";
 
 export default {
+  computed: {
+    isLoggedIn() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      if (isLoggedIn) {
+        return JSON.parse(isLoggedIn); // Convert stored string to boolean
+      }
+      return false;
+    },
+  },
   watch: {
     tiempoRestante(nuevo, anterior) {
       if (nuevo < 120) {
@@ -25,31 +37,35 @@ export default {
           rejectLabel: "No",
           acceptLabel: "Si",
           accept: () => {
-            
+
             //renovar token
             renovarUsuario(cedulaService.getToken()).then((x) => {
 
               localStorage.setItem("token", x.jwt);
               localStorage.setItem("isLoggedIn", true);
-              this.token = jose.decodeJwt(x.jwt, { complete: true }); 
+              this.token = jose.decodeJwt(x.jwt, { complete: true });
               this.actualizarTiempoRestante(); // Update timer after successful renewal
               this.iniciarTemporizador();
               this.$toast.add({
-              group:"session",
-              severity: "info",
-              summary: "Confirmed",
-              detail: "Sesión Renovada",
-              life: 3000,
-            });
+                group: "session",
+                severity: "info",
+                summary: "Confirmado",
+                detail: "Sesión Renovada",
+                life: 3000,
+              });
+              location.reload();
+              //window.location.reload();
+
             })
           },
           reject: () => {
             this.$toast.add({
               severity: "error",
-              summary: "Rejected",
-              detail: "You have rejected",
+              summary: "Rechazado",
+              detail: "Se va a cerrrar la sesión",
               life: 3000,
             });
+
             this.tiempoRestante = null;
             localStorage.removeItem("token");
             localStorage.setItem("isLoggedIn", false);
@@ -81,7 +97,7 @@ export default {
           },
         },
         {
-          label: "Run",
+          label: "Compensar",
           icon: "pi pi-list",
           index: 4,
           command: () => {
@@ -95,7 +111,7 @@ export default {
         {
           label: "Login",
           index: 0,
-          icon: "pi pi-home",
+          icon: "pi pi-user",
           command: () => {
             this.$router.push("/login");
           },
@@ -103,7 +119,7 @@ export default {
         {
           label: "Registro",
           index: 1,
-          icon: "pi pi-home",
+          icon: "pi pi-user-plus",
           command: () => {
             this.$router.push("/registro");
           },
@@ -168,7 +184,7 @@ export default {
     this.detenerTemporizador();
   },
   components: {
-    NavBar,
+    NavBar, Footer
   },
 };
 </script>
@@ -180,6 +196,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
+}
+
+body {
+  position: relative;
+  border: 6px solid red;
+  min-height: 100vh;
+  padding-bottom: 80px;
 }
 
 nav {

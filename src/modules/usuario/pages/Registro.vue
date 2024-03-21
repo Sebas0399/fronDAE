@@ -50,7 +50,7 @@
       errorMessagePassword || "&nbsp;"
     }}</small>
       <div>
-        <Button type="submit" label="Submit" :loading="loading" />
+        <Button type="submit" label="Registro" :loading="loading" />
       </div>
     </form>
     <Toast />

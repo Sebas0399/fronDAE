@@ -34,9 +34,8 @@
                     <h3>Paso 1: Regístrate</h3>
                     <p class="text-left	"> Ingresa tu información como, Nombres, Cedula y
                         correo
-                        <router-link to="/registro" class="enlace-parrafo">
-                            AQUI
-                        </router-link>
+                        <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" @click="this.$router.push('/registro')">AQUI</a>
+
                         <br>
 
                     </p>
@@ -48,6 +47,8 @@
                         paquetes especiales para emprendedores o negocios.</p>
                     <h3>Paso 3:</h3>
                     <p class="text-left	">Ingresa tu empresa, y rellena los insumos correspondientes.</p> <br>
+                    <h3>Paso 4:</h3>
+                    <p class="text-left	">Compensa tus anexos </p> <br>
                     <p class="text-left	">¡Olvida los papeleos!<br> Anexos Aduana, tu herramienta
                         aduanera
                     </p>
@@ -56,12 +57,7 @@
         </ScrollPanel>
     </div>
     <div class="beneficios"></div>
-    <div class="footer">
-        <p>Copyright © 2024. <a href="https://www.suplitesa.com/" target="_blank">Suplitesa</a> Todos
-            los
-            derechos reservados.</p>
-    </div>
-
+ 
 
 
 </template>
@@ -141,13 +137,7 @@ p {
     flex-direction: column;
 }
 
-.footer {
-    background-color: #3c54cc;
-    margin-top: auto;
-    color: black;
-    padding: 5px;
-    border-radius: 10px;
-}
+
 
 .enlace-parrafo {
     display: inline-block;

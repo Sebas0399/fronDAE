@@ -10,6 +10,8 @@ import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';   // optional
 import Row from 'primevue/row'; 
 
+import Chart from 'primevue/chart';
+
 import Menu from 'primevue/menu';
 import ToastService from 'primevue/toastservice';
 import "primeflex/primeflex.css";
@@ -89,6 +91,8 @@ app.component("ProgressSpinner",ProgressSpinner)
 app.component("ScrollPanel",ScrollPanel)
 app.component("Carousel",Carousel)
 app.component("Tag",Tag)
+app.component("Chart",Chart)
+
 
 app.directive('badge', BadgeDirective);
 
