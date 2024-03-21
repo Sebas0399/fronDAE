@@ -71,9 +71,11 @@ export default {
                             lang: "es"
 
                         }).then(function (paramlog) {
+                            console.log("bien")
                             console.log(paramlog);
                             return paramlog;
                         }).catch(function (paramlog2) {
+                            console.log("proceso cancelado")
                             console.log(paramlog2);
                             return paramlog2;
                         });
@@ -82,6 +84,9 @@ export default {
                     onComplete: function (model, actions) {
                         console.log('Payment complete:', model);
                         // Handle successful payment completion (e.g., update order status, display confirmation message)
+                    },
+                    onabort:function(){
+
                     }
                 }).render('#pp-button-container');
             } catch (error) {
