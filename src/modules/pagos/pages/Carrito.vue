@@ -62,8 +62,8 @@ export default {
                     btnCard: true,
                     createOrder: async function (actions) {
                         return actions.prepare({
-                            amount: 1000,
-                            amountWithoutTax: 1000,
+                            amount: 100,
+                            amountWithoutTax: 100,
                             currency: "USD",
                             clientTransactionId: "identificador-único",
                             lang: "es"
