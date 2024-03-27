@@ -8,53 +8,11 @@
                     <h1>Precios</h1>
                 </div>
             </div>
-            <div class="grid">
-                <div class="col">
-                    <Carousel :value="instrucciones" :numVisible="1" :numScroll="1" orientation="horizontal"
-                        verticalViewPortHeight="330px" contentClass="flex align-items-center">
-                        <template #item="slotProps">
-                            <div class="border-1 surface-border border-round m-2  p-3">
-                                <div class="mb-3">
-                                    <div class="relative mx-auto">
-                                        <img :src="slotProps.data.image" class="w-full border-round" />
 
-                                    </div>
-                                </div>
-                                <div class="mb-3 font-medium">{{ slotProps.data.description }}</div>
-                                <div class="flex justify-content-between align-items-center">
-                                    <div class="mt-0 font-semibold text-xl">Paso {{ slotProps.data.id }}</div>
-
-                                </div>
-                            </div>
-                        </template>
-                    </Carousel>
-                </div>
-                <div class="col text-lg	">
-                    <h3>Te explicamos paso a paso cómo empezar a usar Anexos Aduana</h3>
-                    <h3>Paso 1: Regístrate</h3>
-                    <p class="text-left	"> Ingresa tu información como, Nombres, Cedula y
-                        correo
-                        <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
-                            @click="this.$router.push('/registro')">AQUI</a>
-
-                        <br>
-
-                    </p>
-                    <h3>Paso 2: Haz tu primera recarga</h3>
-                    <p class="text-left	">Elige el paquete que más se adapte a tus necesidades, disponemos paquetes
-                        desde $10 para uso
-                        personal
-                        y
-                        paquetes especiales para emprendedores o negocios.</p>
-                    <h3>Paso 3:</h3>
-                    <p class="text-left	">Ingresa tu empresa, y rellena los insumos correspondientes.</p> <br>
-                    <h3>Paso 4:</h3>
-                    <p class="text-left	">Compensa tus anexos </p> <br>
-                    <p class="text-left	">¡Olvida los papeleos!<br> Anexos Aduana, tu herramienta
-                        aduanera
-                    </p>
-                </div>
+            <div v-for="(plan, id) in planes" :key="id">
+                <CardPago :plan="plan"></CardPago>
             </div>
+
         </ScrollPanel>
     </div>
     <div class="beneficios"></div>
@@ -64,32 +22,18 @@
 </template>
 
 <script>
-
+import CardPago from "@/modules/pagos/pages/CardPago.vue"
+import jsonData from "@/modules/pagos/helpers/planes.json"
 export default {
     components: {
-
+        CardPago
     },
 
     data() {
         return {
+            planes: jsonData
 
-            instrucciones: [
-                {
-                    id: '1',
-                    description: 'Regístrate',
-                    image: require('@/assets/instrucciones/1.jpg'),
-                },
-                {
-                    id: '2',
-                    description: 'Haz tu primera recarga',
-                    image: require('@/assets/instrucciones/2.jpg'),
-                },
-                {
-                    id: '3',
-                    description: 'Sube la información necesaria',
-                    image: require('@/assets/instrucciones/3.jpg'),
-                },
-            ]
+
         }
     },
 }

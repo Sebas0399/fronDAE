@@ -2,7 +2,7 @@
   <div class="footer">
     <p>
       Copyright © 2024.
-      <a href="https://www.suplitesa.com/" target="_blank">Suplitesa</a> Todos
+      <a href="https://www.intraservice.com.ec/" >Intraservice</a> Todos
       los derechos reservados.
     </p>
   </div>
@@ -13,12 +13,15 @@ export default {};
 <style scoped>
 .footer {
   background-color: #3c54cc;
-  color: black;
+  color: white;
   position: absolute;
   bottom: 0;
   width: 100%;
   padding: 5px;
-  height:50px;
+  height: 50px;
   border-radius: 10px;
+}
+.footer a{
+  color: white;
 }
 </style>
