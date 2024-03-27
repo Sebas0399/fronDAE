@@ -117,19 +117,28 @@ export default {
           },
         },
         {
-          label: "Registro",
-          index: 1,
-          icon: "pi pi-user-plus",
-          command: () => {
-            this.$router.push("/registro");
-          },
-        },
-        {
           label: "Inicio",
           index: 1,
           icon: "pi pi-home",
           command: () => {
             this.$router.push("/");
+          },
+        },
+        {
+          label: "Contacto",
+          index: 1,
+          icon: "pi pi-send",
+          command: () => {
+            this.$router.push("/contacto");
+          },
+        },
+
+        {
+          label: "Precios",
+          index: 1,
+          icon: "pi pi-shopping-cart",
+          command: () => {
+            this.$router.push("/precio");
           },
         },
       ],

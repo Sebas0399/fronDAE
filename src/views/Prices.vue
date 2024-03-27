@@ -3,9 +3,9 @@
         <ScrollPanel style="width: 100%; height: 100%">
 
             <div class="image-container">
-                <Image :src="require('@/assets/exportacionBanner.jpeg')" imageClass="w-full mt-1 max-h-30rem" />
+                <Image :src="require('@/assets/precios.jpg')" imageClass="w-full mt-1 max-h-30rem	" />
                 <div class="text-overlay">
-                    <h1>¿Como funciona?</h1>
+                    <h1>Precios</h1>
                 </div>
             </div>
             <div class="grid">
@@ -29,12 +29,13 @@
                         </template>
                     </Carousel>
                 </div>
-                <div class="col text-lg	" >
+                <div class="col text-lg	">
                     <h3>Te explicamos paso a paso cómo empezar a usar Anexos Aduana</h3>
                     <h3>Paso 1: Regístrate</h3>
                     <p class="text-left	"> Ingresa tu información como, Nombres, Cedula y
                         correo
-                        <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" @click="this.$router.push('/registro')">AQUI</a>
+                        <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
+                            @click="this.$router.push('/registro')">AQUI</a>
 
                         <br>
 
@@ -57,7 +58,7 @@
         </ScrollPanel>
     </div>
     <div class="beneficios"></div>
- 
+
 
 
 </template>
@@ -71,7 +72,7 @@ export default {
 
     data() {
         return {
-          
+
             instrucciones: [
                 {
                     id: '1',

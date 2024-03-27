@@ -8,6 +8,8 @@ import Registro from '@/modules/usuario/pages/Registro.vue'
 import Pago from '@/modules/pagos/pages/Pago.vue'
 import Carrito from '@/modules/pagos/pages/Carrito.vue'
 import HomeView from '@/views/HomeView.vue'
+import Contact from '@/views/Contact.vue'
+import Prices from '@/views/Prices.vue'
 
 const routes = [{
   path: '/',
@@ -23,6 +25,17 @@ const routes = [{
   path: '/login',
   name: 'login',
   component: Login
+},
+
+{
+  path: '/contacto',
+  name: 'contacto',
+  component: Contact
+},
+{
+  path: '/precio',
+  name: 'precio',
+  component: Prices
 },
 {
   path: '/dashboard',

@@ -15,7 +15,7 @@
     ]"></i>
         </a>
       </template>
-      <template #end>
+      <template #end v-if="logged===true">
         <div class="flex align-items-center gap-2">
           <Button type="button" icon="pi pi-user" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
           <Menu ref="menu" id="overlay_menu" :model="itemsUsuario" :popup="true" />
@@ -33,6 +33,7 @@ export default {
       type: Array, // or the appropriate type for your items prop
       required: true,
     },
+    logged:localStorage.getItem("isLoggedIn")
   },
   methods: {
     toggle(event) {

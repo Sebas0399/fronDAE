@@ -53,6 +53,7 @@ import BadgeDirective from 'primevue/badgedirective';
 
 
 const app = createApp(App);
+
 app.use(PrimeVue,{ripple:true});
 app.use(ToastService);
 app.use(ConfirmationService);
